@@ -339,6 +339,7 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+# 自定义
 bin/
 bin-int/
 build/
