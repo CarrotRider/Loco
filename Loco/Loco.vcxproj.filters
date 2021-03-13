@@ -21,10 +21,20 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\test.fs" />
+    <None Include="assets\shaders\test.vs" />
   </ItemGroup>
 </Project>
