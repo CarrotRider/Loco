@@ -343,3 +343,4 @@ healthchecksdb
 bin/
 bin-int/
 build/
+assets/
