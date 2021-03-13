@@ -5,6 +5,8 @@
 
 #include "Shader.h"
 
+using namespace Loco;
+
 void processInput(GLFWwindow* window);
 
 void framebuffer_size_callback(
