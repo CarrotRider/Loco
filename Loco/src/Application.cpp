@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -84,10 +87,15 @@ int main(void)
 	Texture texture_1("assets/textures/container.jpg");
 	Texture texture_2("assets/textures/awesomeface.png");
 
+	//glm::mat4 trans(1.0f);
+	//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+	//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
 	Shader shader("assets/shaders/test.vs", "assets/shaders/test.fs");
 	shader.Active();
 	shader.SetUniform("texture1", 0);
 	shader.SetUniform("texture2", 1);
+
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -100,9 +108,13 @@ int main(void)
 		texture_1.Active(0);
 		texture_2.Active(1);
 		shader.Active();
+
+		glm::mat4 trans(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		shader.SetUniform("transform", trans);
+		
 		glBindVertexArray(VAO);
-
-
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
