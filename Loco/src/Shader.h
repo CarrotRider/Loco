@@ -6,11 +6,12 @@ namespace Loco {
 	{
 	public:
 		Shader(const std::string& vertPath, const std::string& fragPath);
-		~Shader();
+		virtual ~Shader();
 
-		void Active();
-		void UnActive();
-		unsigned int ID() { return m_ID; }
+		void Active() const;
+		void UnActive() const;
+		
+		unsigned int ID() const { return m_ID; }
 
 		void SetUniform(const std::string& name, bool value) const;
 		void SetUniform(const std::string& name, int value) const;

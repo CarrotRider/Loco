@@ -77,12 +77,12 @@ namespace Loco {
 		glDeleteProgram(m_ID);
 	}
 
-	void Shader::Active()
+	void Shader::Active() const
 	{
 		glUseProgram(m_ID);
 	}
 
-	void Shader::UnActive()
+	void Shader::UnActive() const
 	{
 		glUseProgram(0);
 	}
