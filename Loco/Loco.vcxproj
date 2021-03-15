@@ -103,6 +103,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\Texture.h" />

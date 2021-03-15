@@ -9,16 +9,27 @@
 
 #include "Shader.h"
 #include "Texture.h"
+#include "Camera.h"
 
 using namespace Loco;
 
 void processInput(GLFWwindow* window);
-
-void framebuffer_size_callback(
-	GLFWwindow* window, int width, int height);
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xPos, double yPos);
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 
 const unsigned int SCR_WIDTH = 960;
 const unsigned int SCR_HEIGHT = 540;
+
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+bool firstMouse = true;
+
+float lastX = 0.0f;
+float lastY = 0.0f;
+
+Camera camera;
 
 int main(void)
 {
@@ -45,6 +56,10 @@ int main(void)
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -130,12 +145,19 @@ int main(void)
 	shader.SetUniform("texture1", 0);
 	shader.SetUniform("texture2", 1);
 
+
+
 	glEnable(GL_DEPTH_TEST);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
+	
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
 		/* Render here */
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -145,8 +167,9 @@ int main(void)
 
 		glm::mat4 model(1.0f);
 		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-		glm::mat4 view(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+		glm::mat4 view = camera.GetViewMatrix();
+
 		glm::mat4 projection(1.0f);
 		projection = glm::perspective(glm::radians(45.0f), float(SCR_WIDTH / SCR_HEIGHT), 0.1f, 100.0f);
 		
@@ -176,9 +199,41 @@ void processInput(GLFWwindow* window)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xPos, double yPos)
+{
+	if (firstMouse)
+	{
+		lastX = xPos;
+		lastY = yPos;
+		firstMouse = false;
+	}
+
+	float xOffset = xPos - lastX;
+	float yOffset = yPos - lastY;
+	lastX = xPos;
+	lastY = yPos;
+
+	camera.ProcessMouseMovement(xOffset, yOffset);
+
+}
+
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
+{
+	camera.ProcessMouseScroll(yOffset);
 }
