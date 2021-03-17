@@ -14,7 +14,7 @@ namespace Loco {
 
 		GameObject* GetOwner() { return m_Owner; }
 		int GetUpdateOrder() const { return m_UpdateOrder; }
-	private:
+	protected:
 		GameObject* m_Owner;
 		int m_UpdateOrder;
 	};

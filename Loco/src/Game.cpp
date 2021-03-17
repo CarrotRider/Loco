@@ -1,33 +1,77 @@
 #include "stdafx.h"
 #include "Game.h"
 
+
 namespace Loco {
 
+	Game* Game::instance = nullptr;
+	
 	Game::Game()
-		:m_GameState(GameState::RUNNING)
-		,m_Renderer(nullptr)
-		,m_UpdatingGameObj(false)
+		: m_GameState(GameState::RUNNING)
+		, m_Renderer(nullptr)
+		, m_UpdatingGameObj(false)
+		, m_TickCounts(0)
+		, m_Camera(nullptr)
 	{
-
+		m_Camera = new Camera();
 	}
+
 
 	Game::~Game()
 	{
-
+		delete m_Camera;
+		delete m_Renderer;
 	}
 
 	bool Game::Initialize()
 	{
-		return false;
+		m_Renderer = new Renderer(this);
+		if (!m_Renderer->Initialize(980.0f, 540.0f))
+		{
+			std::cout << "Failed to initialize renderer" << std::endl;
+			delete m_Renderer;
+			m_Renderer = nullptr;
+			return false;
+		}
+		glfwSetFramebufferSizeCallback(GetRenderer()->GetWindow(), 
+			[](GLFWwindow* window, int width, int height) {
+				glViewport(0, 0, width, height);
+			});
+		glfwSetCursorPosCallback(GetRenderer()->GetWindow(),
+			[](GLFWwindow* window, double xPos, double yPos) {
+				if (Game::GetInstance()->firstMouse)
+				{
+					Game::GetInstance()->lastX = xPos;
+					Game::GetInstance()->lastY = yPos;
+					Game::GetInstance()->firstMouse = false;
+				}
+
+				float xOffset = xPos - Game::GetInstance()->lastX;
+				float yOffset = yPos - Game::GetInstance()->lastY;
+				Game::GetInstance()->lastX = xPos;
+				Game::GetInstance()->lastY = yPos;
+
+				Game::GetInstance()->m_Camera->ProcessMouseMovement(xOffset, yOffset);
+			});
+		glfwSetScrollCallback(GetRenderer()->GetWindow(), 
+			[](GLFWwindow* window, double xOffset, double yOffset) {
+				Game::GetInstance()->GetCamera()->ProcessMouseScroll(yOffset);
+			});
+		return true;
 	}
 
 	void Game::Loop()
 	{
-		if (m_GameState != GameState::PAUSE)
+		//todo: 计算 deltaTime
+		float currentFrame = glfwGetTime();
+		float deltaTime = currentFrame - m_TickCounts;
+		m_TickCounts = currentFrame;
+
+		while (m_GameState != GameState::PAUSE)
 		{
-			ProcessInput();
-			GameUpdate();
-			Output();
+			ProcessInput(deltaTime);
+			GameUpdate(deltaTime);
+			Output(deltaTime);
 		}
 	}
 
@@ -65,16 +109,46 @@ namespace Loco {
 		}
 	}
 
-	void Game::ProcessInput()
+	void Game::mouse_callback(GLFWwindow* window, double xPos, double yPos)
 	{
-		// todo
+		if (Game::GetInstance()->firstMouse)
+		{
+			Game::GetInstance()->lastX = xPos;
+			Game::GetInstance()->lastY = yPos;
+			Game::GetInstance()->firstMouse = false;
+		}
+
+		float xOffset = xPos - Game::GetInstance()->lastX;
+		float yOffset = yPos - Game::GetInstance()->lastY;
+		Game::GetInstance()->lastX = xPos;
+		Game::GetInstance()->lastY = yPos;
+
+		Game::GetInstance()->m_Camera->ProcessMouseMovement(xOffset, yOffset);
 	}
 
-	void Game::GameUpdate()
+	void Game::ProcessInput(float deltaTime)
 	{
-		//todo: 计算 deltaTime
-		float deltaTime = 0.5f;
+		GLFWwindow* window = GetRenderer()->GetWindow();
 
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		{
+			glfwSetWindowShouldClose(window, true);
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			m_Camera->ProcessKeyboard(FORWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			m_Camera->ProcessKeyboard(BACKWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			m_Camera->ProcessKeyboard(LEFT, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			m_Camera->ProcessKeyboard(RIGHT, deltaTime);
+
+		glfwPollEvents();
+	}
+
+	void Game::GameUpdate(float deltaTime)
+	{
 		if (m_GameState == GameState::RUNNING)
 		{
 			m_UpdatingGameObj = true;
@@ -91,9 +165,9 @@ namespace Loco {
 		m_PendingGameObjs.clear();
 	}
 
-	void Game::Output()
+	void Game::Output(float deltaTime)
 	{
-		// todo
+		m_Renderer->Draw(deltaTime);
 	}
 
 }

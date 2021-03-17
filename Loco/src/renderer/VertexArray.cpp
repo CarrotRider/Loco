@@ -5,7 +5,11 @@
 
 namespace Loco {
 
-	VertexArray::VertexArray(const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices)
+	VertexArray::VertexArray(const float* verts, unsigned int numVerts, 
+		const unsigned int* indices, unsigned int numIndices)
+		: m_NumVerts(numVerts)
+		, m_NumIndices(numIndices)
+		, m_ID(0), m_ID_VBO(0), m_ID_EBO(0)
 	{
 		glGenVertexArrays(1, &m_ID);
 		glBindVertexArray(m_ID);
