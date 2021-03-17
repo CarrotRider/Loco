@@ -21,6 +21,7 @@ namespace Loco {
 	{
 		delete m_Camera;
 		delete m_Renderer;
+		delete Game::instance;
 	}
 
 	bool Game::Initialize()
@@ -33,6 +34,10 @@ namespace Loco {
 			m_Renderer = nullptr;
 			return false;
 		}
+		glfwSetWindowCloseCallback(GetRenderer()->GetWindow(),
+			[](GLFWwindow* window) {
+				Game::GetInstance()->SetGameState(GameState::QUIT);
+			});
 		glfwSetFramebufferSizeCallback(GetRenderer()->GetWindow(), 
 			[](GLFWwindow* window, int width, int height) {
 				glViewport(0, 0, width, height);
@@ -51,7 +56,7 @@ namespace Loco {
 				Game::GetInstance()->lastX = xPos;
 				Game::GetInstance()->lastY = yPos;
 
-				Game::GetInstance()->m_Camera->ProcessMouseMovement(xOffset, yOffset);
+				Game::GetInstance()->m_Camera->ProcessMouseMovement(xOffset, -yOffset);
 			});
 		glfwSetScrollCallback(GetRenderer()->GetWindow(), 
 			[](GLFWwindow* window, double xOffset, double yOffset) {
@@ -67,7 +72,7 @@ namespace Loco {
 		float deltaTime = currentFrame - m_TickCounts;
 		m_TickCounts = currentFrame;
 
-		while (m_GameState != GameState::PAUSE)
+		while (m_GameState == GameState::RUNNING)
 		{
 			ProcessInput(deltaTime);
 			GameUpdate(deltaTime);
@@ -109,23 +114,6 @@ namespace Loco {
 		}
 	}
 
-	void Game::mouse_callback(GLFWwindow* window, double xPos, double yPos)
-	{
-		if (Game::GetInstance()->firstMouse)
-		{
-			Game::GetInstance()->lastX = xPos;
-			Game::GetInstance()->lastY = yPos;
-			Game::GetInstance()->firstMouse = false;
-		}
-
-		float xOffset = xPos - Game::GetInstance()->lastX;
-		float yOffset = yPos - Game::GetInstance()->lastY;
-		Game::GetInstance()->lastX = xPos;
-		Game::GetInstance()->lastY = yPos;
-
-		Game::GetInstance()->m_Camera->ProcessMouseMovement(xOffset, yOffset);
-	}
-
 	void Game::ProcessInput(float deltaTime)
 	{
 		GLFWwindow* window = GetRenderer()->GetWindow();
@@ -134,7 +122,8 @@ namespace Loco {
 		{
 			glfwSetWindowShouldClose(window, true);
 		}
-
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			this->SetGameState(GameState::QUIT);
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			m_Camera->ProcessKeyboard(FORWARD, deltaTime);
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)

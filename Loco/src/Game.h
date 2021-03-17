@@ -33,10 +33,9 @@ namespace Loco {
 
 		Renderer* GetRenderer() const { return m_Renderer; }
 		Camera* GetCamera() const { return m_Camera; }
-		//
-		void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-		void mouse_callback(GLFWwindow* window, double xPos, double yPos);
-		static void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
+
+		void SetGameState(GameState state) { m_GameState = state; }
+		GameState GetGameState() { return m_GameState; }
 	private:
 		void ProcessInput(float deltaTime);
 		void GameUpdate(float deltaTime);
