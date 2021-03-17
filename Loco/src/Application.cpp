@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Camera.h"
+#include "VertexArray.h"
 
 using namespace Loco;
 
@@ -117,23 +118,25 @@ int main(void)
 		1, 2, 3  // 第二个三角形
 	};
 
-	unsigned int VAO, VBO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//glGenBuffers(1, &EBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//unsigned int VAO, VBO, EBO;
+	//glGenVertexArrays(1, &VAO);
+	//glBindVertexArray(VAO);
+	//glGenBuffers(1, &VBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	////glGenBuffers(1, &EBO);
+	////glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	////glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(0);
+	////glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	////glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
 	//glBindVertexArray(0);
+
+	VertexArray vao(vertices, 36, indices, 6);
 
 	Texture texture_1("assets/textures/container.jpg");
 	Texture texture_2("assets/textures/awesomeface.png");
@@ -177,11 +180,12 @@ int main(void)
 		shader.SetUniform("view", view);
 		shader.SetUniform("projection", projection);
 
-		glBindVertexArray(VAO);
+		vao.SetActive(true);
+		//glBindVertexArray(VAO);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-
+		//glBindVertexArray(0);
+		vao.SetActive(false);
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
