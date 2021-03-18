@@ -76,7 +76,7 @@ namespace Loco {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::vec3 lightPos(1.2f, 1.0f, 20.0f);
+		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 		shader->Active();
 
@@ -90,9 +90,15 @@ namespace Loco {
 		shader->SetUniform("view", view);
 		shader->SetUniform("projection", projection);
 
-		shader->SetUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-		shader->SetUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		shader->SetUniform("lightPos", lightPos);
+		//shader->SetUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+		shader->SetUniform("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
+		shader->SetUniform("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
+		shader->SetUniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+		shader->SetUniform("material.shininess", 32.0f);
+		shader->SetUniform("light.position", lightPos);
+		shader->SetUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+		shader->SetUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+		shader->SetUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader->SetUniform("viewPos", GetGame()->GetCamera()->Position);
 
 		vao->SetActive(true);
