@@ -15,7 +15,7 @@ namespace Loco {
 		glGenVertexArrays(1, &m_ID);
 		glBindVertexArray(m_ID);
 		
-		unsigned int vertexSize = GetVertexSize(BufferLayout::POS);
+		unsigned int vertexSize = GetVertexSize(layout);
 
 		glGenBuffers(1, &m_ID_VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, m_ID_VBO);
@@ -33,6 +33,12 @@ namespace Loco {
 		case BufferLayout::POS:
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
+			break;
+		case BufferLayout::POS_NORMAL:
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(1);
 			break;
 		case BufferLayout::POS_TEX:
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)0);
@@ -71,11 +77,11 @@ namespace Loco {
 		case Loco::BufferLayout::POS:
 			return 3;
 			break;
+		case Loco::BufferLayout::POS_NORMAL:
+			return 6;
+			break;
 		case Loco::BufferLayout::POS_TEX:
 			return 5;
-			break;
-		default:
-			return 3;
 			break;
 		}
 	}

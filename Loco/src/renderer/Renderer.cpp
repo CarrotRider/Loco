@@ -48,8 +48,8 @@ namespace Loco {
 		}
 
 		//
-		vao = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS);
-		lightVAO = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS);
+		vao = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL);
+		lightVAO = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL);
 		//texture_1 = new Texture("assets/textures/container.jpg");
 		//texture_2 = new Texture("assets/textures/awesomeface.png");
 		//texture_1->Active(0);
@@ -73,8 +73,10 @@ namespace Loco {
 
 	void Renderer::Draw(float deltaTime)
 	{
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glm::vec3 lightPos(1.2f, 1.0f, 20.0f);
 
 		shader->Active();
 
@@ -90,13 +92,14 @@ namespace Loco {
 
 		shader->SetUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
 		shader->SetUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetUniform("lightPos", lightPos);
+		shader->SetUniform("viewPos", GetGame()->GetCamera()->Position);
 
 		vao->SetActive(true);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		vao->SetActive(false);
 
 		lightShader->Active();
-		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f));
