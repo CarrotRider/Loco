@@ -40,6 +40,14 @@ namespace Loco {
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)(3 * sizeof(float)));
 			glEnableVertexAttribArray(1);
 			break;
+		case BufferLayout::POS_NORMAL_TEX:
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)(6 * sizeof(float)));
+			glEnableVertexAttribArray(2);
+			break;
 		case BufferLayout::POS_TEX:
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
@@ -79,6 +87,9 @@ namespace Loco {
 			break;
 		case Loco::BufferLayout::POS_NORMAL:
 			return 6;
+			break;
+		case Loco::BufferLayout::POS_NORMAL_TEX:
+			return 8;
 			break;
 		case Loco::BufferLayout::POS_TEX:
 			return 5;

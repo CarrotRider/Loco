@@ -48,12 +48,12 @@ namespace Loco {
 		}
 
 		//
-		vao = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL);
-		lightVAO = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL);
-		//texture_1 = new Texture("assets/textures/container.jpg");
-		//texture_2 = new Texture("assets/textures/awesomeface.png");
-		//texture_1->Active(0);
-		//texture_2->Active(1);
+		vao = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL_TEX);
+		lightVAO = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL_TEX);
+		texture_1 = new Texture("assets/textures/container2.png");
+		texture_2 = new Texture("assets/textures/container2_specular.png");
+		texture_1->Active(0);
+		texture_2->Active(1);
 		shader = new Shader("assets/shaders/test.vs", "assets/shaders/test.fs");
 		lightShader = new Shader("assets/shaders/test.vs", "assets/shaders/light.fs");
 
@@ -65,8 +65,8 @@ namespace Loco {
 	{
 		delete m_Window;
 		delete vao;
-		//delete texture_1;
-		//delete texture_2;
+		delete texture_1;
+		delete texture_2;
 		delete shader;
 		glfwTerminate();
 	}
@@ -90,10 +90,8 @@ namespace Loco {
 		shader->SetUniform("view", view);
 		shader->SetUniform("projection", projection);
 
-		//shader->SetUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-		shader->SetUniform("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
-		shader->SetUniform("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
-		shader->SetUniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+		shader->SetUniform("material.diffuse", 0);
+		shader->SetUniform("material.specular", 1);
 		shader->SetUniform("material.shininess", 32.0f);
 		shader->SetUniform("light.position", lightPos);
 		shader->SetUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));

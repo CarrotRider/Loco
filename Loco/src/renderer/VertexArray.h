@@ -4,7 +4,7 @@ namespace Loco
 {
 	enum class BufferLayout
 	{
-		POS, POS_NORMAL, POS_TEX
+		POS, POS_NORMAL, POS_NORMAL_TEX, POS_TEX
 	};
 	class VertexArray
 	{
