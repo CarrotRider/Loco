@@ -97,6 +97,9 @@ namespace Loco {
 		shader->SetUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 		shader->SetUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
 		shader->SetUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetUniform("light.constant", 1.0f);
+		shader->SetUniform("light.linear", 0.09f);
+		shader->SetUniform("light.quadratic", 0.032f);
 		shader->SetUniform("viewPos", GetGame()->GetCamera()->Position);
 
 		vao->SetActive(true);
