@@ -102,5 +102,6 @@
   <ItemGroup>
     <None Include="assets\shaders\test.fs" />
     <None Include="assets\shaders\test.vs" />
+    <None Include="assets\shaders\light.fs" />
   </ItemGroup>
 </Project>

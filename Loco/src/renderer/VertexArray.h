@@ -2,17 +2,24 @@
 
 namespace Loco
 {
+	enum class BufferLayout
+	{
+		POS, POS_TEX
+	};
 	class VertexArray
 	{
 	public:
 		VertexArray(const float* verts, unsigned int numVerts,
-			const unsigned int* indices, unsigned int numIndices);
+			const unsigned int* indices, unsigned int numIndices,
+			BufferLayout layout);
 		~VertexArray();
 
 		void SetActive(bool active);
 
 		unsigned int GetVertexNum() const { return m_NumVerts; }
 		unsigned int GetIndexNum() const { return m_NumIndices; }
+
+		static unsigned int GetVertexSize(BufferLayout layout);
 	private:
 		unsigned int m_ID;
 

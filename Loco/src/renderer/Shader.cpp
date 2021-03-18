@@ -108,5 +108,10 @@ namespace Loco {
 		glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 	}
 
+	void Shader::SetUniform(const std::string& name, const glm::vec3& value) const
+	{
+		glUniform3f(glGetUniformLocation(m_ID, name.c_str()), value.x, value.y, value.z);
+	}
+
 }
 

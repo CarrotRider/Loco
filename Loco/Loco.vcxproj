@@ -127,6 +127,7 @@
     <ClInclude Include="src\renderer\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\shaders\light.fs" />
     <None Include="assets\shaders\test.fs" />
     <None Include="assets\shaders\test.vs" />
   </ItemGroup>

@@ -48,15 +48,16 @@ namespace Loco {
 		}
 
 		//
-		vao = new VertexArray(vertices, 36, indices, 6);
-		texture_1 = new Texture("assets/textures/container.jpg");
-		texture_2 = new Texture("assets/textures/awesomeface.png");
-		texture_1->Active(0);
-		texture_2->Active(1);
+		vao = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS);
+		lightVAO = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS);
+		//texture_1 = new Texture("assets/textures/container.jpg");
+		//texture_2 = new Texture("assets/textures/awesomeface.png");
+		//texture_1->Active(0);
+		//texture_2->Active(1);
 		shader = new Shader("assets/shaders/test.vs", "assets/shaders/test.fs");
-		shader->Active();
-		shader->SetUniform("texture1", 0);
-		shader->SetUniform("texture2", 1);
+		lightShader = new Shader("assets/shaders/test.vs", "assets/shaders/light.fs");
+
+
 		glEnable(GL_DEPTH_TEST);
 	}
 
@@ -64,8 +65,8 @@ namespace Loco {
 	{
 		delete m_Window;
 		delete vao;
-		delete texture_1;
-		delete texture_2;
+		//delete texture_1;
+		//delete texture_2;
 		delete shader;
 		glfwTerminate();
 	}
@@ -76,11 +77,10 @@ namespace Loco {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader->Active();
+
 		glm::mat4 model(1.0f);
 		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-
 		glm::mat4 view = GetGame()->GetCamera()->GetViewMatrix();
-
 		glm::mat4 projection(1.0f);
 		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom), float(m_Width / m_Height), 0.1f, 100.0f);
 
@@ -88,9 +88,26 @@ namespace Loco {
 		shader->SetUniform("view", view);
 		shader->SetUniform("projection", projection);
 
+		shader->SetUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+		shader->SetUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+
 		vao->SetActive(true);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		vao->SetActive(false);
+
+		lightShader->Active();
+		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f));
+		lightShader->SetUniform("model", model);
+		lightShader->SetUniform("view", view);
+		lightShader->SetUniform("projection", projection);
+
+
+		lightVAO->SetActive(true);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		lightVAO->SetActive(false);
 
 		glfwSwapBuffers(m_Window);
 	}
