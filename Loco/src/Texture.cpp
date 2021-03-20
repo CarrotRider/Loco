@@ -6,8 +6,13 @@
 
 namespace Loco {
 
-	Texture::Texture(const std::string& texPath)
+	Texture::Texture(const std::string& texPath, Type type)
+		: Texture(texPath.c_str(), type) {}
+
+	Texture::Texture(const char* texPath, Type type)
 		: m_ID(0)
+		, m_Path(texPath)
+		, m_type(type)
 		, m_Channels(0)
 		, m_Width(0)
 		, m_Height(0)
@@ -24,9 +29,9 @@ namespace Loco {
 
 		stbi_set_flip_vertically_on_load(true);
 
-		unsigned char* data = stbi_load(texPath.c_str(), 
+		unsigned char* data = stbi_load(texPath,
 			&m_Width, &m_Height, &m_Channels, 0);
-		if (data) 
+		if (data)
 		{
 			switch (m_Channels)
 			{

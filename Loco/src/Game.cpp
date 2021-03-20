@@ -13,7 +13,7 @@ namespace Loco {
 		, m_TickCounts(0)
 		, m_Camera(nullptr)
 	{
-		m_Camera = new Camera();
+		m_Camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 	}
 
 

@@ -57,6 +57,12 @@
     <ClCompile Include="src\renderer\Renderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -98,10 +104,18 @@
     <ClInclude Include="src\renderer\Renderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\test.fs" />
     <None Include="assets\shaders\test.vs" />
     <None Include="assets\shaders\light.fs" />
+    <None Include="assets\shaders\model_test.vs" />
+    <None Include="assets\shaders\model_test.fs" />
   </ItemGroup>
 </Project>

@@ -48,15 +48,8 @@ namespace Loco {
 		}
 
 		//
-		vao = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL_TEX);
-		lightVAO = new VertexArray(vertices, 36, indices, 6, BufferLayout::POS_NORMAL_TEX);
-		texture_1 = new Texture("assets/textures/container2.png");
-		texture_2 = new Texture("assets/textures/container2_specular.png");
-		texture_1->Active(0);
-		texture_2->Active(1);
-		shader = new Shader("assets/shaders/test.vs", "assets/shaders/test.fs");
-		lightShader = new Shader("assets/shaders/test.vs", "assets/shaders/light.fs");
-
+		m_Model = new Model("assets/models/nanosuit.obj");
+		shader = new Shader("assets/shaders/model_test.vs", "assets/shaders/model_test.fs");
 
 		glEnable(GL_DEPTH_TEST);
 	}
@@ -64,24 +57,21 @@ namespace Loco {
 	void Renderer::ShutDown()
 	{
 		delete m_Window;
-		delete vao;
-		delete texture_1;
-		delete texture_2;
+		delete m_Model;
 		delete shader;
 		glfwTerminate();
 	}
 
 	void Renderer::Draw(float deltaTime)
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 		shader->Active();
 
 		glm::mat4 model(1.0f);
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		glm::mat4 view = GetGame()->GetCamera()->GetViewMatrix();
 		glm::mat4 projection(1.0f);
 		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom), float(m_Width / m_Height), 0.1f, 100.0f);
@@ -90,34 +80,7 @@ namespace Loco {
 		shader->SetUniform("view", view);
 		shader->SetUniform("projection", projection);
 
-		shader->SetUniform("material.diffuse", 0);
-		shader->SetUniform("material.specular", 1);
-		shader->SetUniform("material.shininess", 32.0f);
-		shader->SetUniform("light.position", lightPos);
-		shader->SetUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-		shader->SetUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-		shader->SetUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		shader->SetUniform("light.constant", 1.0f);
-		shader->SetUniform("light.linear", 0.09f);
-		shader->SetUniform("light.quadratic", 0.032f);
-		shader->SetUniform("viewPos", GetGame()->GetCamera()->Position);
-
-		vao->SetActive(true);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		vao->SetActive(false);
-
-		lightShader->Active();
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f));
-		lightShader->SetUniform("model", model);
-		lightShader->SetUniform("view", view);
-		lightShader->SetUniform("projection", projection);
-
-
-		lightVAO->SetActive(true);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		lightVAO->SetActive(false);
+		m_Model->Draw(shader);
 
 		glfwSwapBuffers(m_Window);
 	}

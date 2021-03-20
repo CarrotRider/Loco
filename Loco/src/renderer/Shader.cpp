@@ -98,6 +98,11 @@ namespace Loco {
 		glUniform1i(glGetUniformLocation(m_ID, name.c_str()), value);
 	}
 
+	void Shader::SetUniform(const std::string& name, unsigned value) const
+	{
+		glUniform1ui(glGetUniformLocation(m_ID, name.c_str()), value);
+	}
+
 	void Shader::SetUniform(const std::string& name, float value) const
 	{
 		glUniform1f(glGetUniformLocation(m_ID, name.c_str()), value);

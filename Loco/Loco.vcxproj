@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -67,6 +67,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)..\assimp\assimp-vc142-mtd.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -76,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -86,8 +89,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)..\assimp\assimp-vc142-mtd.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\renderer\ElementBuffer.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Component.cpp" />
@@ -104,6 +112,9 @@
     <ClCompile Include="src\renderer\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dependencies\Assimp\build\code\assimp.vcxproj">
+      <Project>{303803aa-7522-3bc0-8e33-a23c4af400aa}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Dependencies\Glad\Glad.vcxproj">
       <Project>{8fcdef41-62cf-4abf-86be-dd3153f476b0}</Project>
     </ProjectReference>
@@ -112,6 +123,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\renderer\ElementBuffer.h" />
     <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Component.h" />
@@ -128,6 +141,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\light.fs" />
+    <None Include="assets\shaders\model_test.fs" />
+    <None Include="assets\shaders\model_test.vs" />
     <None Include="assets\shaders\test.fs" />
     <None Include="assets\shaders\test.vs" />
   </ItemGroup>
