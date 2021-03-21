@@ -33,6 +33,9 @@ namespace Loco {
 		void AddSpriteComp(const SpriteComponent* spriteComp);
 		void RemoveSpriteComp(const SpriteComponent* spriteComp);
 	private:
+		void initAxis();
+		void drawAxis(const glm::mat4& view, const glm::mat4& projection) const;
+	private:
 		Game* m_Game;
 		GLFWwindow* m_Window;
 		float m_Width;
@@ -42,8 +45,17 @@ namespace Loco {
 		// components
 		std::vector<SpriteComponent*> m_SpriteComps;
 
-		//
+		// Axis
+		const glm::vec3 m_Vecs_Axis[6] {
+			glm::vec3(-500.0f, 0.0f, 0.0f), glm::vec3(500.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, -500.0f, 0.0f), glm::vec3(0.0f, 500.0f, 0.0f),
+			glm::vec3(0.0f, 0.0f, -500.0f), glm::vec3(0.0f, 0.0f, 500.0f),
+		};
+		const unsigned m_Indices_Axis[6]{ 0, 1, 2, 3, 4, 5 };
+		std::unique_ptr<VertexArray> m_VAO_Axis;
+		std::unique_ptr<Shader> m_Shader_Axis;
 
+		//
 		Shader* shader;
 		Model* m_Model;
 	};

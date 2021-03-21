@@ -16,7 +16,6 @@ namespace Loco {
 
 	Renderer::~Renderer()
 	{
-
 	}
 
 	bool Renderer::Initialize(float width, float height)
@@ -47,11 +46,15 @@ namespace Loco {
 			return false;
 		}
 
+		glEnable(GL_DEPTH_TEST);
+
+		initAxis();
+
 		//
 		m_Model = new Model("assets/models/nanosuit.obj");
 		shader = new Shader("assets/shaders/model_test.vs", "assets/shaders/model_test.fs");
-
-		glEnable(GL_DEPTH_TEST);
+		
+		
 	}
 
 	void Renderer::ShutDown()
@@ -67,14 +70,17 @@ namespace Loco {
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader->Active();
-
 		glm::mat4 model(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		glm::mat4 view = GetGame()->GetCamera()->GetViewMatrix();
 		glm::mat4 projection(1.0f);
-		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom), float(m_Width / m_Height), 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom), 
+			float(m_Width / m_Height), 0.1f, 100.0f);
+
+		drawAxis(view, projection);
+
+		shader->Active();
 
 		shader->SetUniform("model", model);
 		shader->SetUniform("view", view);
@@ -105,6 +111,35 @@ namespace Loco {
 	void Renderer::RemoveSpriteComp(const SpriteComponent* spriteComp)
 	{
 
+	}
+
+	void Renderer::initAxis()
+	{
+		m_VAO_Axis = std::make_unique<VertexArray>((float*)m_Vecs_Axis, 6,
+			m_Indices_Axis, 6, BufferLayout::POS);
+		m_Shader_Axis = std::make_unique<Shader>("./assets/shaders/axis.vs",
+			"./assets/shaders/axis.fs");
+	}
+
+	void Renderer::drawAxis(const glm::mat4& view, const glm::mat4& projection) const
+	{
+		m_Shader_Axis->Active();
+
+		m_Shader_Axis->SetUniform("view", view);
+		m_Shader_Axis->SetUniform("projection", projection);
+
+		m_VAO_Axis->SetActive(true);
+
+		m_Shader_Axis->SetUniform("color", glm::vec3(1.0f, 0.0f, 0.0f));
+		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
+		m_Shader_Axis->SetUniform("color", glm::vec3(0.0f, 1.0f, 0.0f));
+		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, (void*)(2 * sizeof(float)));
+		m_Shader_Axis->SetUniform("color", glm::vec3(0.0f, 0.0f, 1.0f));
+		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, (void*)(4 * sizeof(float)));
+		
+		m_VAO_Axis->SetActive(false);
+		
+		m_Shader_Axis->UnActive();
 	}
 
 }

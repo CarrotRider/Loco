@@ -117,5 +117,7 @@
     <None Include="assets\shaders\light.fs" />
     <None Include="assets\shaders\model_test.vs" />
     <None Include="assets\shaders\model_test.fs" />
+    <None Include="assets\shaders\axis.vs" />
+    <None Include="assets\shaders\axis.fs" />
   </ItemGroup>
 </Project>
