@@ -1,16 +1,20 @@
 #include "stdafx.h"
 #include "Mesh.h"
 #include "VertexArray.h"
+#include "Game.h"
+#include "Renderer.h"
 
 #include <glad/glad.h>
 
 namespace Loco {
 
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices, std::vector<Texture*> textures)
+	Mesh::Mesh(std::vector<Vertex> vertices, 
+		std::vector<unsigned> indices, 
+		std::vector<std::string> texturesKeys)
 	{
 		this->m_Vertices = vertices;
 		this->m_Indices = indices;
-		this->m_Textures = textures;
+		this->m_TextureKeys = texturesKeys;
 		
 		m_VAO = new VertexArray(m_Vertices.data(), m_Vertices.size(),
 			m_Indices.data(), m_Indices.size(), BufferLayout::POS_NORMAL_TEX);
@@ -23,6 +27,8 @@ namespace Loco {
 
 	void Mesh::Draw(Shader* shader)
 	{
+		Renderer* renderer = Game::GetInstance()->GetRenderer();
+
 		unsigned int diffuseIdx = 0;
 		unsigned int specularIdx = 0;
 		unsigned int normalIdx = 0;
@@ -30,10 +36,12 @@ namespace Loco {
 		std::string diffName = "texture_diffuse";
 		std::string specName = "texture_specular";
 		std::string normName = "texture_normal";
-		for (unsigned int i = 0; i < m_Textures.size(); i++)
+
+		for (unsigned i = 0; i < m_TextureKeys.size(); i++)
 		{
+			Texture* tex = renderer->GetTexture(m_TextureKeys[i]);
 			std::string name, idx;
-			Texture::Type type = m_Textures[i]->GetType();
+			Texture::Type type = tex->GetType();
 			if (type == Texture::Type::DIFFUSE)
 			{
 				name = diffName;
@@ -49,7 +57,7 @@ namespace Loco {
 				name = normName;
 				idx = std::to_string(normalIdx++);
 			}
-			m_Textures[i]->Active(i);
+			tex->Active(i);
 			shader->SetUniform(name + idx, i);
 		}
 

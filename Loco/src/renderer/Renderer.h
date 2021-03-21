@@ -27,6 +27,7 @@ namespace Loco {
 		GLFWwindow* GetWindow() const { return m_Window; }
 
 		// resources
+		void LoadTexture(const std::string& fileName, Texture::Type type);
 		Texture* GetTexture(const std::string& fileName) const;
 		// components
 		void AddSpriteComp(const SpriteComponent* spriteComp);
@@ -37,7 +38,7 @@ namespace Loco {
 		float m_Width;
 		float m_Height;
 		// resources
-		std::unordered_map<std::string, Texture*> m_Textures;
+		std::unordered_map<std::string, std::unique_ptr<Texture>> m_Textures;
 		// components
 		std::vector<SpriteComponent*> m_SpriteComps;
 

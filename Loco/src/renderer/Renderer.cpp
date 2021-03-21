@@ -85,9 +85,16 @@ namespace Loco {
 		glfwSwapBuffers(m_Window);
 	}
 
+	void Renderer::LoadTexture(const std::string& fileName, Texture::Type type)
+	{
+		m_Textures.insert(std::pair<std::string, std::unique_ptr<Texture>>(fileName,
+			std::move(std::make_unique<Texture>(fileName, type))));
+	}
+
 	Texture* Renderer::GetTexture(const std::string& fileName) const
 	{
-		return nullptr;
+		auto iter = m_Textures.find(fileName);
+		return iter == m_Textures.end() ? nullptr : (*iter).second.get();
 	}
 
 	void Renderer::AddSpriteComp(const SpriteComponent* spriteComp)

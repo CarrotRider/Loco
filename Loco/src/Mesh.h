@@ -19,13 +19,13 @@ namespace Loco {
 		};
 
 		Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices,
-			std::vector<Texture*> textures);
+			std::vector<std::string> );
 		~Mesh();
 		void Draw(Shader* shader);
 
 		std::vector<Vertex> m_Vertices;
 		std::vector<unsigned int> m_Indices;
-		std::vector<Texture*> m_Textures;
+		std::vector<std::string> m_TextureKeys;
 	private:
 		VertexArray* m_VAO;
 	};

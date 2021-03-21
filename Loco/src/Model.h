@@ -22,7 +22,7 @@ namespace Loco
 		void LoadModel(const std::string& path);
 		void ProcessNode(const aiNode* node, const aiScene* scene);
 		Mesh ProcessMesh(const aiMesh* mesh, const aiScene* scene);
-		std::vector<Texture*> LoadMaterialTextures(
+		std::vector<std::string> LoadMaterialTextures(
 			aiMaterial* mat, aiTextureType type);
 	private:
 		std::vector<Mesh> m_Meshes;

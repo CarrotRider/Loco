@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Model.h"
+#include "Game.h"
+#include "Renderer.h"
+
 #define RES_ROOT "./assets/models/"
 
 
@@ -46,7 +49,7 @@ namespace Loco {
 	{
 		std::vector<Mesh::Vertex> vertices;
 		std::vector<unsigned int> indices;
-		std::vector<Texture*> textures;
+		std::vector<std::string> textureKeys;
 
 		// 获取顶点数据
 		for (unsigned i = 0; i < mesh->mNumVertices; i++)
@@ -87,17 +90,18 @@ namespace Loco {
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			std::vector<Texture*> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
-			std::vector<Texture*> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR);
-			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+			std::vector<std::string> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
+			std::vector<std::string> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR);
+			textureKeys.insert(textureKeys.end(), diffuseMaps.begin(), diffuseMaps.end());
+			textureKeys.insert(textureKeys.end(), specularMaps.begin(), specularMaps.end());
 		}
-		return Mesh(vertices, indices, textures);
+		return Mesh(vertices, indices, textureKeys);
 	}
 
-	std::vector<Texture*> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type)
+	std::vector<std::string> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type)
 	{
-		std::vector<Texture*> textures;
+		Renderer* renderer = Game::GetInstance()->GetRenderer();
+		std::vector<std::string> textureKeys;
 		Texture::Type typeLoco = Texture::Type::NONE;
 		switch (type)
 		{
@@ -146,18 +150,15 @@ namespace Loco {
 		default:
 			break;
 		}
-		//if (typeLoco != Texture::Type::NONE)
-		//{
-			for (unsigned i = 0; i < mat->GetTextureCount(type); i++)
-			{
-				aiString str;
-				mat->GetTexture(type, i, &str);
-				std::string s = RES_ROOT + std::string(str.C_Str());
-				//std::cout << s <<" " << (int)typeLoco << std::endl;
-				Texture* texture = new Texture(s, typeLoco);
-				textures.push_back(texture);
-			}
-		//}
-		return textures;
+
+		for (unsigned i = 0; i < mat->GetTextureCount(type); i++)
+		{
+			aiString str;
+			mat->GetTexture(type, i, &str);
+			std::string path = RES_ROOT + std::string(str.C_Str());
+			renderer->LoadTexture(path, typeLoco);
+			textureKeys.push_back(path);
+		}
+		return textureKeys;
 	}
 }
