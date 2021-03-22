@@ -3,7 +3,7 @@
 #include "VertexArray.h"
 #include "Texture.h"
 #include "Model.h"
-#include "SpriteComponent.h"
+#include "RenderableComponent.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -26,24 +26,37 @@ namespace Loco {
 		Game* GetGame() const { return m_Game; }
 		GLFWwindow* GetWindow() const { return m_Window; }
 
-		// resources
-		void LoadTexture(const std::string& fileName, Texture::Type type);
-		Texture* GetTexture(const std::string& fileName) const;
 		// components
-		void AddSpriteComp(const SpriteComponent* spriteComp);
-		void RemoveSpriteComp(const SpriteComponent* spriteComp);
+		void AddRenderableComp(RenderableComponent* renderableComp);
+		void RemoveRenderableComp(RenderableComponent* renderableComp);
+		// resources
+		void LoadTexture(const std::string& fileName, 
+			Texture::Type type = Texture::Type::NONE);
+		Texture* GetTexture(const std::string& fileName) const;
+		void LoadModel(const std::string& fileName);
+		Model* GetModel(const std::string& fileName) const;
+
+		// Getter & Setter
+		void SetWindowWidth(float width) { m_Width = width; }
+		float GetWindowWidth() { return m_Width; }
+		void SetWindowHeight(float height) { m_Height = height; }
+		float GetWindowHeight() { return m_Height; }
+
 	private:
 		void initAxis();
-		void drawAxis(const glm::mat4& view, const glm::mat4& projection) const;
+		void drawAxis() const;
 	private:
 		Game* m_Game;
 		GLFWwindow* m_Window;
 		float m_Width;
 		float m_Height;
+
+		// components
+		std::vector<RenderableComponent*> m_RenderebleComps;
 		// resources
 		std::unordered_map<std::string, std::unique_ptr<Texture>> m_Textures;
-		// components
-		std::vector<SpriteComponent*> m_SpriteComps;
+		std::unordered_map<std::string, std::unique_ptr<Model>> m_Models;
+
 
 		// Axis
 		const glm::vec3 m_Vecs_Axis[6] {
@@ -57,7 +70,7 @@ namespace Loco {
 
 		//
 		Shader* shader;
-		Model* m_Model;
+		//Model* m_Model;
 	};
 }
 

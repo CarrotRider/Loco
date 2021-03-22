@@ -1,10 +1,11 @@
 #pragma once
 
-#include "GameObject.h"
-#include "Renderer.h"
-#include "Camera.h"
 
 namespace Loco {
+
+	class Renderer;
+	class Camera;
+	class GameObject;
 
 	enum class GameState 
 	{
@@ -55,7 +56,9 @@ namespace Loco {
 
 		float lastX = 0.0f;
 		float lastY = 0.0f;
+		
 		//
+		GameObject* go;
 	};
 }
 

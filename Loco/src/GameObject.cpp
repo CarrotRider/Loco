@@ -42,11 +42,6 @@ namespace Loco {
 		}
 	}
 
-	void GameObject::UpdateGameObject(float deltaTime)
-	{
-
-	}
-
 	void GameObject::AddComponent(Component* component)
 	{
 		int compOrder = component->GetUpdateOrder();

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Renderer.h"
-
+#include "Camera.h"
 #include "Game.h"
 
 #include <glad/glad.h>
@@ -51,7 +51,7 @@ namespace Loco {
 		initAxis();
 
 		//
-		m_Model = new Model("assets/models/nanosuit.obj");
+		//m_Model = new Model("assets/models/nanosuit.obj");
 		shader = new Shader("assets/shaders/model_test.vs", "assets/shaders/model_test.fs");
 		
 		
@@ -60,7 +60,7 @@ namespace Loco {
 	void Renderer::ShutDown()
 	{
 		delete m_Window;
-		delete m_Model;
+		//delete m_Model;
 		delete shader;
 		glfwTerminate();
 	}
@@ -70,23 +70,12 @@ namespace Loco {
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 model(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-		glm::mat4 view = GetGame()->GetCamera()->GetViewMatrix();
-		glm::mat4 projection(1.0f);
-		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom), 
-			float(m_Width / m_Height), 0.1f, 100.0f);
+		drawAxis();
 
-		drawAxis(view, projection);
-
-		shader->Active();
-
-		shader->SetUniform("model", model);
-		shader->SetUniform("view", view);
-		shader->SetUniform("projection", projection);
-
-		m_Model->Draw(shader);
+		for (auto& renderableComp : m_RenderebleComps)
+		{
+			renderableComp->OnDraw(shader);
+		}
 
 		glfwSwapBuffers(m_Window);
 	}
@@ -103,14 +92,33 @@ namespace Loco {
 		return iter == m_Textures.end() ? nullptr : (*iter).second.get();
 	}
 
-	void Renderer::AddSpriteComp(const SpriteComponent* spriteComp)
+	void Renderer::LoadModel(const std::string& fileName)
 	{
-
+		m_Models.insert(std::pair<std::string, std::unique_ptr<Model>>(fileName,
+			std::move(std::make_unique<Model>(fileName))));
 	}
 
-	void Renderer::RemoveSpriteComp(const SpriteComponent* spriteComp)
+	Model* Renderer::GetModel(const std::string& fileName) const
 	{
+		auto iter = m_Models.find(fileName);
+		return iter == m_Models.end() ? nullptr : (*iter).second.get();
+	}
+	
 
+
+	void Renderer::AddRenderableComp(RenderableComponent* renderableComp)
+	{
+		m_RenderebleComps.push_back(renderableComp);
+	}
+
+	void Renderer::RemoveRenderableComp(RenderableComponent* renderableComp)
+	{
+		auto iter = std::find(m_RenderebleComps.begin(), m_RenderebleComps.end(), 
+			renderableComp);
+		if (iter != m_RenderebleComps.end())
+		{
+			m_RenderebleComps.erase(iter);
+		}
 	}
 
 	void Renderer::initAxis()
@@ -121,8 +129,13 @@ namespace Loco {
 			"./assets/shaders/axis.fs");
 	}
 
-	void Renderer::drawAxis(const glm::mat4& view, const glm::mat4& projection) const
+	void Renderer::drawAxis() const
 	{
+		glm::mat4 view = GetGame()->GetCamera()->GetViewMatrix();
+		glm::mat4 projection(1.0f);
+		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom),
+			float(m_Width / m_Height), 0.1f, 100.0f);
+
 		m_Shader_Axis->Active();
 
 		m_Shader_Axis->SetUniform("view", view);

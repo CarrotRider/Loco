@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "GameObject.h"
+#include "Renderer.h"
+#include "Camera.h"
+#include "ModelComponent.h"
 
 
 namespace Loco {
@@ -62,6 +66,14 @@ namespace Loco {
 			[](GLFWwindow* window, double xOffset, double yOffset) {
 				Game::GetInstance()->GetCamera()->ProcessMouseScroll(yOffset);
 			});
+
+		//
+		go = new GameObject(this);
+		go->AddComponent(new ModelComponent(go, new Model("assets/models/nanosuit.obj")));
+		go->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));
+		go->GetTransform()->SetRotation(glm::vec3(30.0f, 0.0f, 0.0f));
+		go->GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
 		return true;
 	}
 

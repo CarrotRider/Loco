@@ -20,14 +20,16 @@ namespace Loco {
 
 		void OnUpdate(float deltaTime);
 		void UpdateComponents(float deltaTime);
-		virtual void UpdateGameObject(float deltaTime);
+		virtual void UpdateGameObject(float deltaTime) {};
 
 		void AddComponent(Component* component);
 		void RemoveComponent(Component* component);
-
+		
 		Game* GetGame() { return m_Game; }
-		GameObjState GetState() const { return m_State; }
+		TransformComponent* GetTransform() { return m_Transform; }
+
 		void SetState(GameObjState state) { m_State = state; }
+		GameObjState GetState() const { return m_State; }
 	private:
 		Game* m_Game;
 		GameObjState m_State;

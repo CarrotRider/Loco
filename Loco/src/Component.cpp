@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Component.h"
-
+#include "Game.h"
 #include "GameObject.h"
 
 namespace Loco {
@@ -17,8 +17,19 @@ namespace Loco {
 		m_Owner->RemoveComponent(this);
 	}
 
-	void Component::OnUpdate(float deltaTime)
+	GameObject* Component::GetOwner()
 	{
-
+		return m_Owner;
 	}
+
+	Game* Component::GetGame()
+	{
+		return m_Owner->GetGame();
+	}
+
+	int Component::GetUpdateOrder() const
+	{
+		return m_UpdateOrder;
+	}
+
 }
