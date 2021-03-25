@@ -11,6 +11,8 @@
 namespace Loco {
 
 	class Game;
+	class RenderBuffer;
+	class FrameBuffer;
 
 	class Renderer
 	{
@@ -50,6 +52,24 @@ namespace Loco {
 		GLFWwindow* m_Window;
 		float m_Width;
 		float m_Height;
+
+		//
+		float m_ScreenPanel[30]{
+			// positions		// texCoords
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f
+		};
+		unsigned m_Indices_Screen[6]{ 0,1,2,3,4,5 };
+		VertexArray* m_ScreenVA;
+		FrameBuffer* m_FrameBuffer;
+		Texture* m_ScreenTexture;
+		RenderBuffer* m_RenderBuffer;
+		Shader* m_ShaderFinal;
 
 		// components
 		std::vector<RenderableComponent*> m_RenderebleComps;

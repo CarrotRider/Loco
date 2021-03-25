@@ -10,8 +10,8 @@ namespace Loco {
 		Shader(const std::string& vertPath, const std::string& fragPath);
 		virtual ~Shader();
 
-		void Active() const;
-		void UnActive() const;
+		void Bind() const;
+		void UnBind() const;
 		
 		unsigned int ID() const { return m_ID; }
 

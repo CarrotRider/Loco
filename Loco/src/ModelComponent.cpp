@@ -53,7 +53,7 @@ namespace Loco {
 		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom),
 			GetRenderer()->GetWindowWidth()/GetRenderer()->GetWindowHeight(), 0.1f, 100.0f);
 		
-		shader->Active();
+		shader->Bind();
 
 		shader->SetUniform("model", model);
 		shader->SetUniform("view", view);

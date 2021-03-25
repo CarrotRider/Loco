@@ -53,6 +53,24 @@ namespace Loco {
 		stbi_image_free(data);
 	}
 
+	// 用于 FrameBuffer
+	Texture::Texture(int width, int height)
+		: m_ID(0)
+		, m_Path()
+		, m_type(Type::NONE)
+		, m_Channels(0)
+		, m_Width(0)
+		, m_Height(0)
+	{
+		glGenTextures(1, &m_ID);
+		glBindTexture(GL_TEXTURE_2D, m_ID);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
 	Texture::~Texture()
 	{
 		glDeleteTextures(1, &m_ID);

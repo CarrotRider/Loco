@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "FrameBuffer.h"
+#include "RenderBuffer.h"
 #include "Camera.h"
 #include "Game.h"
 
@@ -46,13 +48,34 @@ namespace Loco {
 			return false;
 		}
 
-		glEnable(GL_DEPTH_TEST);
+		// Init Frame Buffer
+		m_FrameBuffer = new FrameBuffer();
 
+		m_ScreenTexture = new Texture(m_Width, m_Height);
+		m_FrameBuffer->BindTexture(*m_ScreenTexture, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D);
+
+		m_RenderBuffer = new RenderBuffer(GL_DEPTH24_STENCIL8, m_Width, m_Height);
+		m_FrameBuffer->BindRenderBuffer(*m_RenderBuffer);
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
+			std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+		}
+		m_FrameBuffer->UnBind();
+
+		// Pass Final
+		m_ScreenVA = new VertexArray(m_ScreenPanel, 6, m_Indices_Screen, 6, 
+			BufferLayout::POS_TEX);
+		m_ShaderFinal = new Shader("assets/shaders/final_pass.vs",
+			"assets/shaders/final_pass.fs");
+
+		// Init Scene
 		initAxis();
 
-		//
+		// Init Custom
 		//m_Model = new Model("assets/models/nanosuit.obj");
-		shader = new Shader("assets/shaders/model_test.vs", "assets/shaders/model_test.fs");
+		shader = new Shader("assets/shaders/model_test.vs", 
+			"assets/shaders/model_test.fs");
 		
 		
 	}
@@ -60,22 +83,46 @@ namespace Loco {
 	void Renderer::ShutDown()
 	{
 		delete m_Window;
-		//delete m_Model;
+		
+		delete m_ScreenVA;
+		delete m_FrameBuffer;
+		delete m_ScreenTexture;
+		delete m_RenderBuffer;
+		delete m_ShaderFinal;
+
+		//
 		delete shader;
 		glfwTerminate();
 	}
 
 	void Renderer::Draw(float deltaTime)
 	{
+		// Pass One
+		m_FrameBuffer->Bind();
+		
+		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		
 		drawAxis();
 
 		for (auto& renderableComp : m_RenderebleComps)
 		{
 			renderableComp->OnDraw(shader);
 		}
+
+		// Pass Final
+		m_FrameBuffer->UnBind();
+		
+		glDisable(GL_DEPTH_TEST);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		
+		m_ShaderFinal->Bind();
+		m_ScreenVA->SetActive(true);
+		m_ScreenTexture->Active(0);
+		m_ShaderFinal->SetUniform("screenTexture", 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(m_Window);
 	}
@@ -136,7 +183,7 @@ namespace Loco {
 		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom),
 			float(m_Width / m_Height), 0.1f, 100.0f);
 
-		m_Shader_Axis->Active();
+		m_Shader_Axis->Bind();
 
 		m_Shader_Axis->SetUniform("view", view);
 		m_Shader_Axis->SetUniform("projection", projection);
@@ -152,7 +199,7 @@ namespace Loco {
 		
 		m_VAO_Axis->SetActive(false);
 		
-		m_Shader_Axis->UnActive();
+		m_Shader_Axis->UnBind();
 	}
 
 }
