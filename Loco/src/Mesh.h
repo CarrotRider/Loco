@@ -19,7 +19,7 @@ namespace Loco {
 		};
 
 		Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices,
-			std::vector<std::string> );
+			std::vector<std::string> texturesKeys);
 		~Mesh();
 		void Draw(Shader* shader);
 

@@ -73,7 +73,6 @@ namespace Loco {
 		initAxis();
 
 		// Init Custom
-		//m_Model = new Model("assets/models/nanosuit.obj");
 		shader = new Shader("assets/shaders/model_test.vs", 
 			"assets/shaders/model_test.fs");
 		
@@ -123,6 +122,7 @@ namespace Loco {
 		m_ScreenTexture->Active(0);
 		m_ShaderFinal->SetUniform("screenTexture", 0);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		m_ScreenTexture->UnBind();
 
 		glfwSwapBuffers(m_Window);
 	}

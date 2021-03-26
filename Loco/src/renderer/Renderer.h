@@ -90,7 +90,6 @@ namespace Loco {
 
 		//
 		Shader* shader;
-		//Model* m_Model;
 	};
 }
 
