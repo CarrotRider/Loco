@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Renderer.h"
 
-#define RES_ROOT "./assets/models/"
+#include "Path.h"
 
 
 namespace Loco {
@@ -155,7 +155,7 @@ namespace Loco {
 		{
 			aiString str;
 			mat->GetTexture(type, i, &str);
-			std::string path = RES_ROOT + std::string(str.C_Str());
+			std::string path = MODEL_PATH + std::string(str.C_Str());
 			renderer->LoadTexture(path, typeLoco);
 			textureKeys.push_back(path);
 		}

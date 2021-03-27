@@ -4,6 +4,8 @@
 #include "RenderBuffer.h"
 #include "Camera.h"
 #include "Game.h"
+#include "CubeTexture.h"
+
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -71,6 +73,7 @@ namespace Loco {
 
 		// Init Scene
 		initAxis();
+		initSkybox();
 
 		// Init Custom
 		m_ShaderDefault = new Shader("assets/shaders/default.vs", 
@@ -101,6 +104,7 @@ namespace Loco {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		drawSkybox();
 		drawAxis();
 
 		m_ShaderDefault->Bind();
@@ -207,7 +211,7 @@ namespace Loco {
 		glm::mat4 view = GetGame()->GetCamera()->GetViewMatrix();
 		glm::mat4 projection(1.0f);
 		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom),
-			float(m_Width / m_Height), 0.1f, 100.0f);
+			float(m_Width / m_Height), 0.1f, 1000.0f);
 
 		m_Shader_Axis->Bind();
 
@@ -226,6 +230,43 @@ namespace Loco {
 		m_VAO_Axis->SetActive(false);
 		
 		m_Shader_Axis->UnBind();
+	}
+
+	void Renderer::initSkybox()
+	{
+		m_VAO_Skybox = std::make_unique<VertexArray>(m_Vecs_Skybox, 36,
+			m_Indices_Axis, 26, BufferLayout::POS);
+		m_Shader_Skybox = std::make_unique<Shader>("./assets/shaders/sky_box.vs",
+			"./assets/shaders/sky_box.fs");
+		m_CubeTexture = std::make_unique<CubeTexture>();
+		m_CubeTexture->Load(m_SkyboxTexPaths);
+	}
+
+	void Renderer::drawSkybox() const
+	{
+		glm::mat4 model(1.0f);
+		model = glm::scale(model, glm::vec3(500.0f, 500.0f, 500.0f));
+		glm::mat4 view = GetGame()->GetCamera()->GetViewMatrix();
+		glm::mat4 projection(1.0f);
+		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom),
+			float(m_Width / m_Height), 0.1f, 1000.0f);
+
+		m_Shader_Skybox->Bind();
+
+		m_Shader_Skybox->SetUniform("model", model);
+		m_Shader_Skybox->SetUniform("view", view);
+		m_Shader_Skybox->SetUniform("projection", projection);
+
+		glDepthMask(GL_FALSE);
+		m_VAO_Skybox->SetActive(true);
+
+		m_CubeTexture->Bind();
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		m_VAO_Skybox->SetActive(false);
+		glDepthMask(GL_TRUE);
+
+		m_Shader_Skybox->UnBind();
 	}
 
 }

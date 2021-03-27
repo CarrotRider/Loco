@@ -94,6 +94,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CubeTexture.cpp" />
     <ClCompile Include="src\LightComponent.cpp" />
     <ClCompile Include="src\renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\renderer\RenderBuffer.cpp" />
@@ -128,7 +129,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CubeTexture.h" />
     <ClInclude Include="src\LightComponent.h" />
+    <ClInclude Include="src\Path.h" />
     <ClInclude Include="src\renderer\FrameBuffer.h" />
     <ClInclude Include="src\renderer\RenderBuffer.h" />
     <ClInclude Include="src\Component.h" />
@@ -162,6 +165,8 @@
     <None Include="assets\shaders\show_depth.fs" />
     <None Include="assets\shaders\test.fs" />
     <None Include="assets\shaders\test.vs" />
+    <None Include="assets\shaders\sky_box.fs" />
+    <None Include="assets\shaders\sky_box.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -82,7 +82,7 @@ namespace Loco {
 		modelComp->SetShader(lightShader);
 		//lightComp->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 		//light->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));
-		light->GetTransform()->SetRotation(glm::vec3(-45.0f, -45.0f, -45.0f));
+		light->GetTransform()->SetRotation(glm::vec3(50.0f, -30.0f, 0.0f));
 
 
 		return true;

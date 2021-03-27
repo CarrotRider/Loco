@@ -78,6 +78,9 @@
     <ClCompile Include="src\LightComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\CubeTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -137,6 +140,12 @@
     <ClInclude Include="src\LightComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\CubeTexture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Path.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\test.fs" />
@@ -152,5 +161,7 @@
     <None Include="assets\shaders\default.vs" />
     <None Include="assets\shaders\default.fs" />
     <None Include="assets\shaders\light.vs" />
+    <None Include="assets\shaders\sky_box.vs" />
+    <None Include="assets\shaders\sky_box.fs" />
   </ItemGroup>
 </Project>
