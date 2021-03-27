@@ -75,6 +75,9 @@
     <ClCompile Include="src\renderer\FrameBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\LightComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -131,6 +134,9 @@
     <ClInclude Include="src\renderer\FrameBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\LightComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\test.fs" />
@@ -143,5 +149,8 @@
     <None Include="assets\shaders\show_depth.fs" />
     <None Include="assets\shaders\final_pass.vs" />
     <None Include="assets\shaders\final_pass.fs" />
+    <None Include="assets\shaders\default.vs" />
+    <None Include="assets\shaders\default.fs" />
+    <None Include="assets\shaders\light.vs" />
   </ItemGroup>
 </Project>

@@ -34,6 +34,12 @@ namespace Loco {
 
 	void ModelComponent::OnDraw(Shader* shader)
 	{
+
+		if (m_Shader != nullptr)
+		{
+			shader = m_Shader;
+		}
+
 		glm::mat4 model(1.0f);
 		model = glm::rotate(model, 
 			glm::radians(GetOwner()->GetTransform()->GetRotation(DIR::X)), 
@@ -60,6 +66,8 @@ namespace Loco {
 		shader->SetUniform("projection", projection);
 
 		m_Model->Draw(shader);
+		
+		shader->UnBind();
 	}
 
 }

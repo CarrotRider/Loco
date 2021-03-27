@@ -59,6 +59,7 @@ namespace Loco {
 		
 		//
 		GameObject* go;
+		GameObject* light;
 	};
 }
 

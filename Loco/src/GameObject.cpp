@@ -62,6 +62,7 @@ namespace Loco {
 		if (iter != m_Components.end())
 		{
 			m_Components.erase(iter);
+			delete component;
 		}
 	}
 }

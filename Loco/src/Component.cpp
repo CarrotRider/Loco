@@ -9,7 +9,7 @@ namespace Loco {
 		: m_Owner(owner)
 		, m_UpdateOrder(updateOrder)
 	{
-		m_Owner->AddComponent(this);
+		//m_Owner->AddComponent(this);
 	}
 
 	Component::~Component()
@@ -17,12 +17,12 @@ namespace Loco {
 		m_Owner->RemoveComponent(this);
 	}
 
-	GameObject* Component::GetOwner()
+	GameObject* Component::GetOwner() const
 	{
 		return m_Owner;
 	}
 
-	Game* Component::GetGame()
+	Game* Component::GetGame() const
 	{
 		return m_Owner->GetGame();
 	}

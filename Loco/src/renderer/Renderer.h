@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Model.h"
 #include "RenderableComponent.h"
+#include "LightComponent.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -31,6 +32,10 @@ namespace Loco {
 		// components
 		void AddRenderableComp(RenderableComponent* renderableComp);
 		void RemoveRenderableComp(RenderableComponent* renderableComp);
+
+		void AddLightComp(LightComponent* lightComp);
+		void RemoveLightComp(LightComponent* lightComp);
+
 		// resources
 		void LoadTexture(const std::string& fileName, 
 			Texture::Type type = Texture::Type::NONE);
@@ -73,6 +78,7 @@ namespace Loco {
 
 		// components
 		std::vector<RenderableComponent*> m_RenderebleComps;
+		std::vector<LightComponent*> m_LightComps; // 方向光
 		// resources
 		std::unordered_map<std::string, std::unique_ptr<Texture>> m_Textures;
 		std::unordered_map<std::string, std::unique_ptr<Model>> m_Models;
@@ -89,7 +95,7 @@ namespace Loco {
 		std::unique_ptr<Shader> m_Shader_Axis;
 
 		//
-		Shader* shader;
+		Shader* m_ShaderDefault;
 	};
 }
 

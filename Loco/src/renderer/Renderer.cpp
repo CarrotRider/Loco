@@ -73,10 +73,8 @@ namespace Loco {
 		initAxis();
 
 		// Init Custom
-		shader = new Shader("assets/shaders/model_test.vs", 
-			"assets/shaders/model_test.fs");
-		
-		
+		m_ShaderDefault = new Shader("assets/shaders/default.vs", 
+			"assets/shaders/default.fs");
 	}
 
 	void Renderer::ShutDown()
@@ -90,7 +88,7 @@ namespace Loco {
 		delete m_ShaderFinal;
 
 		//
-		delete shader;
+		delete m_ShaderDefault;
 		glfwTerminate();
 	}
 
@@ -100,14 +98,30 @@ namespace Loco {
 		m_FrameBuffer->Bind();
 		
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		drawAxis();
 
+		m_ShaderDefault->Bind();
+		m_ShaderDefault->SetUniform("viewPos", GetGame()->GetCamera()->Position);
+		
+		int len = m_LightComps.size();
+		std::string s0 = "dirLights[";
+		std::string s1 = "].Position";
+		std::string s2 = "].Direction";
+		std::string s3 = "].Color";
+		for (int i = 0; i < len; i++)
+		{
+			std::string idx = std::to_string(i);
+			m_ShaderDefault->SetUniform(s0 + idx + s1, m_LightComps[i]->GetPosition());
+			m_ShaderDefault->SetUniform(s0 + idx + s2, m_LightComps[i]->GetDirection());
+			m_ShaderDefault->SetUniform(s0 + idx + s3, m_LightComps[i]->GetColor());
+		}
+
 		for (auto& renderableComp : m_RenderebleComps)
 		{
-			renderableComp->OnDraw(shader);
+			renderableComp->OnDraw(m_ShaderDefault);
 		}
 
 		// Pass Final
@@ -150,8 +164,6 @@ namespace Loco {
 		auto iter = m_Models.find(fileName);
 		return iter == m_Models.end() ? nullptr : (*iter).second.get();
 	}
-	
-
 
 	void Renderer::AddRenderableComp(RenderableComponent* renderableComp)
 	{
@@ -165,6 +177,20 @@ namespace Loco {
 		if (iter != m_RenderebleComps.end())
 		{
 			m_RenderebleComps.erase(iter);
+		}
+	}
+
+	void Renderer::AddLightComp(LightComponent* lightComp)
+	{
+		m_LightComps.push_back(lightComp);
+	}
+
+	void Renderer::RemoveLightComp(LightComponent* lightComp)
+	{
+		auto iter = std::find(m_LightComps.begin(), m_LightComps.end(), lightComp);
+		if (iter != m_LightComps.end())
+		{
+			m_LightComps.erase(iter);
 		}
 	}
 

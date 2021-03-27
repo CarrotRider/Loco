@@ -10,7 +10,7 @@ namespace Loco {
 
 	}
 
-	Loco::Renderer* RenderableComponent::GetRenderer()
+	Renderer* RenderableComponent::GetRenderer()
 	{
 		return GetGame()->GetRenderer();
 	}
