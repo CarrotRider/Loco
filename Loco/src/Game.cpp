@@ -74,15 +74,15 @@ namespace Loco {
 		//go->GetTransform()->SetRotation(glm::vec3(30.0f, 0.0f, 0.0f));
 		//go->GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 		light = new GameObject(this);
-		ModelComponent* modelComp = new ModelComponent(light, new Model("assets/models/default_cube.obj"));
+		ModelComponent* modelComp = new ModelComponent(light, new Model("assets/models/arrow.obj"));
 		LightComponent* lightComp = new LightComponent(light);
 		light->AddComponent(modelComp);
 		light->AddComponent(lightComp);
 		Shader* lightShader = new Shader("assets/shaders/light.vs", "assets/shaders/light.fs");
 		modelComp->SetShader(lightShader);
 		//lightComp->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
-		light->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));
-		light->GetTransform()->SetRotation(light->GetTransform()->GetPosition() - glm::vec3(0.0f, 0.0f, 0.0f));
+		//light->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));
+		light->GetTransform()->SetRotation(glm::vec3(-45.0f, -45.0f, -45.0f));
 
 
 		return true;
