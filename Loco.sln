@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp", "Dependencies\Assi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "Dependencies\GLFW\build\src\glfw.vcxproj", "{C3079910-4C81-38F3-87C1-74C88A756872}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{C3079910-4C81-38F3-87C1-74C88A756872}.Release|x64.Build.0 = Release|x64
 		{C3079910-4C81-38F3-87C1-74C88A756872}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{C3079910-4C81-38F3-87C1-74C88A756872}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.Debug|x64.ActiveCfg = Debug|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.Debug|x64.Build.0 = Debug|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.MinSizeRel|x64.ActiveCfg = Debug|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.MinSizeRel|x64.Build.0 = Debug|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.Release|x64.ActiveCfg = Release|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.Release|x64.Build.0 = Release|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.RelWithDebInfo|x64.ActiveCfg = Release|x64
+		{6D90E353-1ED1-4B2B-9A00-7C36EF76ADC9}.RelWithDebInfo|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

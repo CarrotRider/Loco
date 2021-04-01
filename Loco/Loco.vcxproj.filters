@@ -15,180 +15,160 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp">
+    <ClCompile Include="src\Loco\event\Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\stdafx.cpp">
+    <ClCompile Include="src\Loco\renderer\FrameBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\stb_image.cpp">
+    <ClCompile Include="src\Loco\renderer\RenderBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Texture.cpp">
+    <ClCompile Include="src\Loco\renderer\Renderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Game.cpp">
+    <ClCompile Include="src\Loco\renderer\Shader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject.cpp">
+    <ClCompile Include="src\Loco\renderer\VertexArray.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\TransformComponent.cpp">
+    <ClCompile Include="src\Loco\Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\ElementBuffer.cpp">
+    <ClCompile Include="src\Loco\Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\VertexBuffer.cpp">
+    <ClCompile Include="src\Loco\Component.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\VertexArray.cpp">
+    <ClCompile Include="src\Loco\CubeTexture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\Shader.cpp">
+    <ClCompile Include="src\Loco\Game.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\Renderer.cpp">
+    <ClCompile Include="src\Loco\GameObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mesh.cpp">
+    <ClCompile Include="src\Loco\LightComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model.cpp">
+    <ClCompile Include="src\Loco\Mesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\ModelComponent.cpp">
+    <ClCompile Include="src\Loco\Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\RenderableComponent.cpp">
+    <ClCompile Include="src\Loco\ModelComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Component.cpp">
+    <ClCompile Include="src\Loco\RenderableComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
+    <ClCompile Include="src\Loco\stb_image.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\RenderBuffer.cpp">
+    <ClCompile Include="src\Loco\stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\FrameBuffer.cpp">
+    <ClCompile Include="src\Loco\Texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\LightComponent.cpp">
+    <ClCompile Include="src\Loco\TransformComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\CubeTexture.cpp">
+    <ClCompile Include="src\Loco\Window.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WindowsWindow.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\event\Event.cpp">
+    <ClCompile Include="src\Loco\WindowsWindow.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\stdafx.h">
+    <ClInclude Include="src\Loco\event\AppEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Texture.h">
+    <ClInclude Include="src\Loco\event\Event.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
+    <ClInclude Include="src\Loco\event\KeyEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Game.h">
+    <ClInclude Include="src\Loco\event\MouseEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObject.h">
+    <ClInclude Include="src\Loco\renderer\FrameBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\TransformComponent.h">
+    <ClInclude Include="src\Loco\renderer\RenderBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\ElementBuffer.h">
+    <ClInclude Include="src\Loco\renderer\Renderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\VertexBuffer.h">
+    <ClInclude Include="src\Loco\renderer\Shader.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\VertexArray.h">
+    <ClInclude Include="src\Loco\renderer\VertexArray.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\Shader.h">
+    <ClInclude Include="src\Loco\Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\Renderer.h">
+    <ClInclude Include="src\Loco\Component.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mesh.h">
+    <ClInclude Include="src\Loco\CubeTexture.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Model.h">
+    <ClInclude Include="src\Loco\Game.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\ModelComponent.h">
+    <ClInclude Include="src\Loco\GameObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderableComponent.h">
+    <ClInclude Include="src\Loco\LightComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Component.h">
+    <ClInclude Include="src\Loco\Mesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\RenderBuffer.h">
+    <ClInclude Include="src\Loco\Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\FrameBuffer.h">
+    <ClInclude Include="src\Loco\ModelComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\LightComponent.h">
+    <ClInclude Include="src\Loco\Path.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\CubeTexture.h">
+    <ClInclude Include="src\Loco\RenderableComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Path.h">
+    <ClInclude Include="src\Loco\stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window.h">
+    <ClInclude Include="src\Loco\Texture.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\event\AppEvent.h">
+    <ClInclude Include="src\Loco\TransformComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\event\Event.h">
+    <ClInclude Include="src\Loco\Window.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\event\KeyEvent.h">
+    <ClInclude Include="src\Loco\WindowsWindow.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\event\MouseEvent.h">
+    <ClInclude Include="src\Loco\EntryPoint.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\WindowsWindow.h">
+    <ClInclude Include="src\Loco\Core.h">
       <Filter>头文件</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\test.fs" />
-    <None Include="assets\shaders\test.vs" />
-    <None Include="assets\shaders\light.fs" />
-    <None Include="assets\shaders\model_test.vs" />
-    <None Include="assets\shaders\model_test.fs" />
-    <None Include="assets\shaders\axis.vs" />
-    <None Include="assets\shaders\axis.fs" />
-    <None Include="assets\shaders\show_depth.fs" />
-    <None Include="assets\shaders\final_pass.vs" />
-    <None Include="assets\shaders\final_pass.fs" />
-    <None Include="assets\shaders\default.vs" />
-    <None Include="assets\shaders\default.fs" />
-    <None Include="assets\shaders\light.vs" />
-    <None Include="assets\shaders\sky_box.vs" />
-    <None Include="assets\shaders\sky_box.fs" />
+    <ClInclude Include="src\Loco.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

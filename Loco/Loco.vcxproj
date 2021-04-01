@@ -19,13 +19,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -57,9 +57,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LOCO_PLATFORM_WINDOWS;LOCO_BUILD_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\event\;$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\Loco\event\;$(ProjectDir)src\Loco\renderer\;$(ProjectDir)src\Loco\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -77,9 +77,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LOCO_PLATFORM_WINDOWS;LOCO_BUILD_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\event\;$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\Loco\event\;$(ProjectDir)src\Loco\renderer\;$(ProjectDir)src\Loco\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -94,31 +94,29 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\event\Event.cpp" />
-    <ClCompile Include="src\WindowsWindow.cpp" />
-    <ClCompile Include="src\CubeTexture.cpp" />
-    <ClCompile Include="src\LightComponent.cpp" />
-    <ClCompile Include="src\renderer\FrameBuffer.cpp" />
-    <ClCompile Include="src\renderer\RenderBuffer.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\Component.cpp" />
-    <ClCompile Include="src\RenderableComponent.cpp" />
-    <ClCompile Include="src\ModelComponent.cpp" />
-    <ClCompile Include="src\Model.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\renderer\ElementBuffer.cpp" />
-    <ClCompile Include="src\GameObject.cpp" />
-    <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\renderer\Renderer.cpp" />
-    <ClCompile Include="src\renderer\Shader.cpp" />
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\stb_image.cpp" />
-    <ClCompile Include="src\stdafx.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
-    <ClCompile Include="src\TransformComponent.cpp" />
-    <ClCompile Include="src\renderer\VertexArray.cpp" />
-    <ClCompile Include="src\renderer\VertexBuffer.cpp" />
-    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\Loco\event\Event.cpp" />
+    <ClCompile Include="src\Loco\WindowsWindow.cpp" />
+    <ClCompile Include="src\Loco\CubeTexture.cpp" />
+    <ClCompile Include="src\Loco\LightComponent.cpp" />
+    <ClCompile Include="src\Loco\renderer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Loco\renderer\RenderBuffer.cpp" />
+    <ClCompile Include="src\Loco\Camera.cpp" />
+    <ClCompile Include="src\Loco\Component.cpp" />
+    <ClCompile Include="src\Loco\RenderableComponent.cpp" />
+    <ClCompile Include="src\Loco\ModelComponent.cpp" />
+    <ClCompile Include="src\Loco\Model.cpp" />
+    <ClCompile Include="src\Loco\Mesh.cpp" />
+    <ClCompile Include="src\Loco\GameObject.cpp" />
+    <ClCompile Include="src\Loco\Game.cpp" />
+    <ClCompile Include="src\Loco\renderer\Renderer.cpp" />
+    <ClCompile Include="src\Loco\renderer\Shader.cpp" />
+    <ClCompile Include="src\Loco\Application.cpp" />
+    <ClCompile Include="src\Loco\stb_image.cpp" />
+    <ClCompile Include="src\Loco\stdafx.cpp" />
+    <ClCompile Include="src\Loco\Texture.cpp" />
+    <ClCompile Include="src\Loco\TransformComponent.cpp" />
+    <ClCompile Include="src\Loco\renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Loco\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\Assimp\build\code\assimp.vcxproj">
@@ -132,50 +130,34 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\event\AppEvent.h" />
-    <ClInclude Include="src\event\Event.h" />
-    <ClInclude Include="src\event\KeyEvent.h" />
-    <ClInclude Include="src\event\MouseEvent.h" />
-    <ClInclude Include="src\WindowsWindow.h" />
-    <ClInclude Include="src\CubeTexture.h" />
-    <ClInclude Include="src\LightComponent.h" />
-    <ClInclude Include="src\Path.h" />
-    <ClInclude Include="src\renderer\FrameBuffer.h" />
-    <ClInclude Include="src\renderer\RenderBuffer.h" />
-    <ClInclude Include="src\Component.h" />
-    <ClInclude Include="src\RenderableComponent.h" />
-    <ClInclude Include="src\ModelComponent.h" />
-    <ClInclude Include="src\Model.h" />
-    <ClInclude Include="src\Mesh.h" />
-    <ClInclude Include="src\renderer\ElementBuffer.h" />
-    <ClInclude Include="src\GameObject.h" />
-    <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\renderer\Renderer.h" />
-    <ClInclude Include="src\Camera.h" />
-    <ClInclude Include="src\renderer\Shader.h" />
-    <ClInclude Include="src\stdafx.h" />
-    <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\TransformComponent.h" />
-    <ClInclude Include="src\renderer\VertexArray.h" />
-    <ClInclude Include="src\renderer\VertexBuffer.h" />
-    <ClInclude Include="src\Window.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\axis.fs" />
-    <None Include="assets\shaders\axis.vs" />
-    <None Include="assets\shaders\default.fs" />
-    <None Include="assets\shaders\default.vs" />
-    <None Include="assets\shaders\final_pass.fs" />
-    <None Include="assets\shaders\final_pass.vs" />
-    <None Include="assets\shaders\light.fs" />
-    <None Include="assets\shaders\light.vs" />
-    <None Include="assets\shaders\model_test.fs" />
-    <None Include="assets\shaders\model_test.vs" />
-    <None Include="assets\shaders\show_depth.fs" />
-    <None Include="assets\shaders\test.fs" />
-    <None Include="assets\shaders\test.vs" />
-    <None Include="assets\shaders\sky_box.fs" />
-    <None Include="assets\shaders\sky_box.vs" />
+    <ClInclude Include="src\Loco.h" />
+    <ClInclude Include="src\Loco\Core.h" />
+    <ClInclude Include="src\Loco\EntryPoint.h" />
+    <ClInclude Include="src\Loco\event\AppEvent.h" />
+    <ClInclude Include="src\Loco\event\Event.h" />
+    <ClInclude Include="src\Loco\event\KeyEvent.h" />
+    <ClInclude Include="src\Loco\event\MouseEvent.h" />
+    <ClInclude Include="src\Loco\WindowsWindow.h" />
+    <ClInclude Include="src\Loco\CubeTexture.h" />
+    <ClInclude Include="src\Loco\LightComponent.h" />
+    <ClInclude Include="src\Loco\Path.h" />
+    <ClInclude Include="src\Loco\renderer\FrameBuffer.h" />
+    <ClInclude Include="src\Loco\renderer\RenderBuffer.h" />
+    <ClInclude Include="src\Loco\Component.h" />
+    <ClInclude Include="src\Loco\RenderableComponent.h" />
+    <ClInclude Include="src\Loco\ModelComponent.h" />
+    <ClInclude Include="src\Loco\Model.h" />
+    <ClInclude Include="src\Loco\Mesh.h" />
+    <ClInclude Include="src\Loco\GameObject.h" />
+    <ClInclude Include="src\Loco\Game.h" />
+    <ClInclude Include="src\Loco\renderer\Renderer.h" />
+    <ClInclude Include="src\Loco\Camera.h" />
+    <ClInclude Include="src\Loco\renderer\Shader.h" />
+    <ClInclude Include="src\Loco\stdafx.h" />
+    <ClInclude Include="src\Loco\Texture.h" />
+    <ClInclude Include="src\Loco\TransformComponent.h" />
+    <ClInclude Include="src\Loco\renderer\VertexArray.h" />
+    <ClInclude Include="src\Loco\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
