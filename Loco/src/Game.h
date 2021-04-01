@@ -35,6 +35,8 @@ namespace Loco {
 		void SetGameState(GameState state) { m_GameState = state; }
 		GameState GetGameState() { return m_GameState; }
 	protected:
+		virtual bool InitializeGamePlay() { return true; }
+
 		void ProcessInput(float deltaTime);
 		void GameUpdate(float deltaTime);
 		void Output(float deltaTime);
@@ -54,11 +56,10 @@ namespace Loco {
 
 		float lastX = 0.0f;
 		float lastY = 0.0f;
-		
-		//
-		GameObject* go;
-		GameObject* light;
 	};
+
+	// 由客户程序实现
+	Game* CreateGame();
 }
 
 
