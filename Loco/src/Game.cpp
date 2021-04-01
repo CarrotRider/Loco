@@ -2,13 +2,15 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Renderer.h"
+#include "WindowsWindow.h"
 #include "Camera.h"
 #include "ModelComponent.h"
+#include "AppEvent.h"
+#include "KeyEvent.h"
+#include "MouseEvent.h"
 
 
 namespace Loco {
-
-	Game* Game::instance = nullptr;
 	
 	Game::Game()
 		: m_GameState(GameState::RUNNING)
@@ -25,11 +27,14 @@ namespace Loco {
 	{
 		delete m_Camera;
 		delete m_Renderer;
-		delete Game::instance;
 	}
 
 	bool Game::Initialize()
 	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(
+			std::bind(&Game::OnEvent, this, std::placeholders::_1));
+
 		m_Renderer = new Renderer(this);
 		if (!m_Renderer->Initialize(980.0f, 540.0f))
 		{
@@ -38,43 +43,15 @@ namespace Loco {
 			m_Renderer = nullptr;
 			return false;
 		}
-		glfwSetWindowCloseCallback(GetRenderer()->GetWindow(),
-			[](GLFWwindow* window) {
-				Game::GetInstance()->SetGameState(GameState::QUIT);
-			});
-		glfwSetFramebufferSizeCallback(GetRenderer()->GetWindow(), 
-			[](GLFWwindow* window, int width, int height) {
-				glViewport(0, 0, width, height);
-			});
-		glfwSetCursorPosCallback(GetRenderer()->GetWindow(),
-			[](GLFWwindow* window, double xPos, double yPos) {
-				if (Game::GetInstance()->firstMouse)
-				{
-					Game::GetInstance()->lastX = xPos;
-					Game::GetInstance()->lastY = yPos;
-					Game::GetInstance()->firstMouse = false;
-				}
-
-				float xOffset = xPos - Game::GetInstance()->lastX;
-				float yOffset = yPos - Game::GetInstance()->lastY;
-				Game::GetInstance()->lastX = xPos;
-				Game::GetInstance()->lastY = yPos;
-
-				Game::GetInstance()->m_Camera->ProcessMouseMovement(xOffset, -yOffset);
-			});
-		glfwSetScrollCallback(GetRenderer()->GetWindow(), 
-			[](GLFWwindow* window, double xOffset, double yOffset) {
-				Game::GetInstance()->GetCamera()->ProcessMouseScroll(yOffset);
-			});
 
 		//
 		go = new GameObject(this);
-		go->AddComponent(new ModelComponent(go, new Model("assets/models/nanosuit.obj")));
+		go->AddComponent(new ModelComponent(go, new Model(m_Renderer,"assets/models/nanosuit.obj")));
 		//go->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));
 		//go->GetTransform()->SetRotation(glm::vec3(30.0f, 0.0f, 0.0f));
 		//go->GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 		light = new GameObject(this);
-		ModelComponent* modelComp = new ModelComponent(light, new Model("assets/models/arrow.obj"));
+		ModelComponent* modelComp = new ModelComponent(light, new Model(m_Renderer, "assets/models/arrow.obj"));
 		LightComponent* lightComp = new LightComponent(light);
 		light->AddComponent(modelComp);
 		light->AddComponent(lightComp);
@@ -108,6 +85,38 @@ namespace Loco {
 
 	}
 
+	void Game::OnEvent(Event& event)
+	{
+		switch (event.GetEventType())
+		{
+		case EventType::WINDOW_CLOSE:
+			SetGameState(GameState::QUIT);
+			break;
+		case EventType::WINDOW_RESIZE:
+			glViewport(0, 0, static_cast<WindowResizeEvent&>(event).GetWidth(), static_cast<WindowResizeEvent&>(event).GetHeight());
+			break;
+		case EventType::MOUSE_MOVED:
+		{
+			MouseMovedEvent& mme = static_cast<MouseMovedEvent&>(event);
+			if (firstMouse)
+			{
+				lastX = mme.GetX();
+				lastY = mme.GetY();
+				firstMouse = false;
+			}
+			float xOffset = mme.GetX() - lastX;
+			float yOffset = mme.GetY() - lastY;
+			lastX = mme.GetX();
+			lastY = mme.GetY();
+			m_Camera->ProcessMouseMovement(xOffset, -yOffset);
+			break;
+		}
+		case EventType::MOUSE_SCROLLED:
+			m_Camera->ProcessMouseScroll(static_cast<MouseScrolledEvent&>(event).GetYOffset());
+			break;
+		}
+	}
+
 	void Game::AddGameObject(GameObject* go)
 	{
 		if (m_UpdatingGameObj)
@@ -139,7 +148,7 @@ namespace Loco {
 
 	void Game::ProcessInput(float deltaTime)
 	{
-		GLFWwindow* window = GetRenderer()->GetWindow();
+		GLFWwindow* window = (GLFWwindow*)m_Window->GetNativeWindow();
 
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		{
@@ -180,6 +189,7 @@ namespace Loco {
 	void Game::Output(float deltaTime)
 	{
 		m_Renderer->Draw(deltaTime);
+		m_Window->OnUpdate();
 	}
 
 }

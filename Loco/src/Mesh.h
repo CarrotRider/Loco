@@ -6,6 +6,7 @@
 namespace Loco {
 
 	class VertexArray;
+	class Renderer;
 
 	class Mesh
 	{
@@ -18,7 +19,7 @@ namespace Loco {
 			glm::vec2 TexCoords;
 		};
 
-		Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices,
+		Mesh(Renderer* renderer, std::vector<Vertex> vertices, std::vector<unsigned> indices,
 			std::vector<std::string> texturesKeys);
 		~Mesh();
 		void Draw(Shader* shader);
@@ -28,6 +29,7 @@ namespace Loco {
 		std::vector<std::string> m_TextureKeys;
 	private:
 		VertexArray* m_VAO;
+		Renderer* m_Renderer;
 	};
 
 }

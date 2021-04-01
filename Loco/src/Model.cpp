@@ -95,12 +95,11 @@ namespace Loco {
 			textureKeys.insert(textureKeys.end(), diffuseMaps.begin(), diffuseMaps.end());
 			textureKeys.insert(textureKeys.end(), specularMaps.begin(), specularMaps.end());
 		}
-		return Mesh(vertices, indices, textureKeys);
+		return Mesh(m_Renderer, vertices, indices, textureKeys);
 	}
 
 	std::vector<std::string> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type)
 	{
-		Renderer* renderer = Game::GetInstance()->GetRenderer();
 		std::vector<std::string> textureKeys;
 		Texture::Type typeLoco = Texture::Type::NONE;
 		switch (type)
@@ -156,7 +155,7 @@ namespace Loco {
 			aiString str;
 			mat->GetTexture(type, i, &str);
 			std::string path = MODEL_PATH + std::string(str.C_Str());
-			renderer->LoadTexture(path, typeLoco);
+			m_Renderer->LoadTexture(path, typeLoco);
 			textureKeys.push_back(path);
 		}
 		return textureKeys;

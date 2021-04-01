@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\event\;$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -79,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\event\;$(ProjectDir)src\renderer\;$(ProjectDir)src\;$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\stb\;$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -94,6 +94,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\event\Event.cpp" />
+    <ClCompile Include="src\WindowsWindow.cpp" />
     <ClCompile Include="src\CubeTexture.cpp" />
     <ClCompile Include="src\LightComponent.cpp" />
     <ClCompile Include="src\renderer\FrameBuffer.cpp" />
@@ -116,19 +118,25 @@
     <ClCompile Include="src\TransformComponent.cpp" />
     <ClCompile Include="src\renderer\VertexArray.cpp" />
     <ClCompile Include="src\renderer\VertexBuffer.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependencies\Assimp\build\code\assimp.vcxproj">
-      <Project>{303803aa-7522-3bc0-8e33-a23c4af400aa}</Project>
+      <Project>{9b78656e-b0e9-370d-a237-450fa71df706}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Dependencies\Glad\Glad.vcxproj">
       <Project>{8fcdef41-62cf-4abf-86be-dd3153f476b0}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Dependencies\GLFW\build\src\glfw.vcxproj">
-      <Project>{359b0fcb-2444-32ca-baee-2d5f596defb3}</Project>
+      <Project>{c3079910-4c81-38f3-87c1-74c88a756872}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\event\AppEvent.h" />
+    <ClInclude Include="src\event\Event.h" />
+    <ClInclude Include="src\event\KeyEvent.h" />
+    <ClInclude Include="src\event\MouseEvent.h" />
+    <ClInclude Include="src\WindowsWindow.h" />
     <ClInclude Include="src\CubeTexture.h" />
     <ClInclude Include="src\LightComponent.h" />
     <ClInclude Include="src\Path.h" />
@@ -150,6 +158,7 @@
     <ClInclude Include="src\TransformComponent.h" />
     <ClInclude Include="src\renderer\VertexArray.h" />
     <ClInclude Include="src\renderer\VertexBuffer.h" />
+    <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\axis.fs" />

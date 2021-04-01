@@ -8,9 +8,10 @@
 
 namespace Loco {
 
-	Mesh::Mesh(std::vector<Vertex> vertices, 
+	Mesh::Mesh(Renderer* renderer, std::vector<Vertex> vertices, 
 		std::vector<unsigned> indices, 
 		std::vector<std::string> texturesKeys)
+		: m_Renderer(renderer)
 	{
 		this->m_Vertices = vertices;
 		this->m_Indices = indices;
@@ -27,8 +28,6 @@ namespace Loco {
 
 	void Mesh::Draw(Shader* shader)
 	{
-		Renderer* renderer = Game::GetInstance()->GetRenderer();
-
 		unsigned int diffuseIdx = 0;
 		unsigned int specularIdx = 0;
 		unsigned int normalIdx = 0;
@@ -39,7 +38,7 @@ namespace Loco {
 
 		for (unsigned i = 0; i < m_TextureKeys.size(); i++)
 		{
-			Texture* tex = renderer->GetTexture(m_TextureKeys[i]);
+			Texture* tex = m_Renderer->GetTexture(m_TextureKeys[i]);
 			std::string name, idx;
 			Texture::Type type = tex->GetType();
 			if (type == Texture::Type::DIFFUSE)

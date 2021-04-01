@@ -6,12 +6,13 @@ using namespace Loco;
 
 int main(void)
 {
-	Game* game = Game::GetInstance();
+	Game* game = new Game();
 	bool success = game->Initialize();
 	if (success)
 	{
 		game->Loop();
 	}
 	game->ShutDown();
+	delete game;
 	return 0;
 }

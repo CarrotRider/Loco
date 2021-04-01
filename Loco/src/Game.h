@@ -4,7 +4,9 @@
 namespace Loco {
 
 	class Renderer;
+	class Window;
 	class Camera;
+	class Event;
 	class GameObject;
 
 	enum class GameState 
@@ -14,34 +16,29 @@ namespace Loco {
 
 	class Game
 	{
-	private:
-		Game();
-		static Game* instance;
 	public:
-		static Game* GetInstance()
-		{
-			if (instance == nullptr)
-				instance = new Game();
-			return instance;
-		}
+		Game();
 		virtual ~Game();
 		bool Initialize();
 		void Loop();
 		void ShutDown();
 
+		void OnEvent(Event& event);
+
 		void AddGameObject(GameObject*);
 		void RemoveGameObject(GameObject* gameObj);
 
+		Window& GetWindow() const { return *m_Window; }
 		Renderer* GetRenderer() const { return m_Renderer; }
 		Camera* GetCamera() const { return m_Camera; }
 
 		void SetGameState(GameState state) { m_GameState = state; }
 		GameState GetGameState() { return m_GameState; }
-	private:
+	protected:
 		void ProcessInput(float deltaTime);
 		void GameUpdate(float deltaTime);
 		void Output(float deltaTime);
-	private:
+	protected:
 		GameState m_GameState;
 
 		bool m_UpdatingGameObj;
@@ -50,6 +47,7 @@ namespace Loco {
 		std::vector<GameObject*> m_PendingGameObjs;
 
 		Renderer* m_Renderer;
+		std::unique_ptr<Window> m_Window;
 		//
 		Camera* m_Camera;
 		bool firstMouse = true;

@@ -81,6 +81,15 @@
     <ClCompile Include="src\CubeTexture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WindowsWindow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\Event.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -144,6 +153,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\Path.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\AppEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\KeyEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\event\MouseEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WindowsWindow.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

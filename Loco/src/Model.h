@@ -9,10 +9,13 @@
 
 namespace Loco
 {
+	class Renderer;
+
 	class Model
 	{
 	public:
-		Model(const std::string& path)
+		Model(Renderer* renderer, const std::string& path)
+			: m_Renderer(renderer)
 		{
 			LoadModel(path);
 		}
@@ -26,6 +29,7 @@ namespace Loco
 			aiMaterial* mat, aiTextureType type);
 	private:
 		std::vector<Mesh> m_Meshes;
+		Renderer* m_Renderer;
 		//std::string m_Dir;
 	};
 }

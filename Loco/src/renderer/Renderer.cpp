@@ -26,23 +26,6 @@ namespace Loco {
 	{
 		m_Width = width;
 		m_Height = height;
-		if (!glfwInit())
-			return -1;
-
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-		m_Window = glfwCreateWindow(width, height, "Loco", nullptr, nullptr);;
-
-		if (!m_Window)
-		{
-			std::cout << "Failed to create GLFW window" << std::endl;
-			glfwTerminate();
-			return false;
-		}
-		glfwMakeContextCurrent(m_Window);
-		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -81,9 +64,7 @@ namespace Loco {
 	}
 
 	void Renderer::ShutDown()
-	{
-		delete m_Window;
-		
+	{	
 		delete m_ScreenVA;
 		delete m_FrameBuffer;
 		delete m_ScreenTexture;
@@ -141,8 +122,6 @@ namespace Loco {
 		m_ShaderFinal->SetUniform("screenTexture", 0);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		m_ScreenTexture->UnBind();
-
-		glfwSwapBuffers(m_Window);
 	}
 
 	void Renderer::LoadTexture(const std::string& fileName, Texture::Type type)
@@ -160,7 +139,7 @@ namespace Loco {
 	void Renderer::LoadModel(const std::string& fileName)
 	{
 		m_Models.insert(std::pair<std::string, std::unique_ptr<Model>>(fileName,
-			std::move(std::make_unique<Model>(fileName))));
+			std::move(std::make_unique<Model>(this ,fileName))));
 	}
 
 	Model* Renderer::GetModel(const std::string& fileName) const

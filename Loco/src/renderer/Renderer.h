@@ -29,7 +29,6 @@ namespace Loco {
 		void Draw(float deltaTime);
 
 		Game* GetGame() const { return m_Game; }
-		GLFWwindow* GetWindow() const { return m_Window; }
 
 		// components
 		void AddRenderableComp(RenderableComponent* renderableComp);
@@ -58,7 +57,6 @@ namespace Loco {
 		void drawSkybox() const;
 	private:
 		Game* m_Game;
-		GLFWwindow* m_Window;
 		float m_Width;
 		float m_Height;
 
