@@ -1,6 +1,5 @@
 #pragma once
 #include "Core.h"
-#include <glad/glad.h>
 
 namespace Loco {
 
@@ -19,12 +18,12 @@ namespace Loco {
 		Texture(int width, int height);
 		virtual ~Texture();
 
-		void Load(const std::string& path, unsigned target = GL_TEXTURE_2D);
-		void Load(const char* path, unsigned target = GL_TEXTURE_2D);
+		void Load(const std::string& path);
+		void Load(const char* path);
 		void UnLoad();
 
-		void Bind(unsigned target = GL_TEXTURE_2D);
-		void UnBind(unsigned target = GL_TEXTURE_2D);
+		void Bind();
+		void UnBind();
 		void Active(int index = 0) const;
 
 		unsigned int GetID() const { return m_ID; }

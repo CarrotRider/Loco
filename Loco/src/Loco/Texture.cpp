@@ -2,6 +2,7 @@
 #include "Texture.h"
 
 #include <stb_image.h>
+#include <glad/glad.h>
 
 namespace Loco {
 
@@ -86,16 +87,16 @@ namespace Loco {
 		UnLoad();
 	}
 
-	void Texture::Load(const std::string& path, unsigned target /*= GL_TEXTURE_2D*/)
+	void Texture::Load(const std::string& path)
 	{
-		Load(path.c_str(), target);
+		Load(path.c_str());
 	}
 
-	void Texture::Load(const char* path, unsigned target /*= GL_TEXTURE_2D*/)
+	void Texture::Load(const char* path)
 	{
 		glGenTextures(1, &m_ID);
 
-		glBindTexture(target, m_ID);
+		glBindTexture(GL_TEXTURE_2D, m_ID);
 
 		stbi_set_flip_vertically_on_load(true);
 		unsigned char* data = stbi_load(path,
@@ -103,21 +104,18 @@ namespace Loco {
 
 		if (data)
 		{
-			if (target == GL_TEXTURE_2D)
+			switch (m_Channels)
 			{
-				switch (m_Channels)
-				{
-				case 3:
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-					break;
-				case 4:
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-					break;
-				default:
-					break;
-				}
-				glGenerateMipmap(GL_TEXTURE_2D);
+			case 3:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+				break;
+			case 4:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+				break;
+			default:
+				break;
 			}
+			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else
 		{
@@ -139,14 +137,14 @@ namespace Loco {
 		glDeleteTextures(1, &m_ID);
 	}
 
-	void Texture::Bind(unsigned target /*= GL_TEXTURE_2D*/)
+	void Texture::Bind()
 	{
-		glBindTexture(target, m_ID);
+		glBindTexture(GL_TEXTURE_2D, m_ID);
 	}
 
-	void Texture::UnBind(unsigned target /*= GL_TEXTURE_2D*/)
+	void Texture::UnBind()
 	{
-		glBindTexture(target, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void Texture::Active(int index) const
