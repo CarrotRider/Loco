@@ -1,13 +1,12 @@
 #pragma once
 #include "Core.h"
 #include <glm/glm.hpp>
-#include "Shader.h"
-#include "Texture.h"
 
 namespace Loco {
 
 	class VertexArray;
 	class Renderer;
+	class Shader;
 
 	class LOCO_API Mesh
 	{

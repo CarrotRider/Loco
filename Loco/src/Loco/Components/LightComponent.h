@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Core.h"
-#include "Component.h"
+#include "Loco/Core.h"
+
+#include "Loco/Component.h"
 
 #include <glm/glm.hpp>
 
@@ -13,10 +14,10 @@ namespace Loco {
 		public Component
 	{
 	public:
-		LightComponent(GameObject* owenr, int updateOrder = 100);
-		virtual ~LightComponent();
+		LightComponent(GameObject* owner, int updateOrder = 100);
+		virtual ~LightComponent() = default;
 
-		virtual void OnUpdate(float deltaTime) override {}
+		void OnUpdate(float deltaTime) override {}
 
 		glm::vec3 GetColor() const { return m_Color; }
 		void SetColor(glm::vec3 color) { m_Color = color; }
@@ -24,10 +25,11 @@ namespace Loco {
 		Renderer* GetRenderer();
 
 		glm::vec3 GetPosition() const;
-		glm::vec3 GetDirection() const;
 	protected:
 		glm::vec3 m_Color;
 	};
+
 }
+
 
 

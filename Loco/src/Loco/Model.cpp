@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "Model.h"
 #include "Game.h"
-#include "Renderer.h"
+#include "Loco/Renderer/Renderer.h"
+#include "Loco/Renderer/Shader.h"
+#include "Texture.h"
 
 #include "Path.h"
 

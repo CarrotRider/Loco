@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core.h"
+#include "Loco/Core.h"
 
-#include "Mesh.h"
+#include "Loco/Mesh.h"
 
 namespace Loco
 {

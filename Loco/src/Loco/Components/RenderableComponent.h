@@ -1,6 +1,6 @@
 #pragma once
-#include "Core.h"
-#include "Component.h"
+#include "Loco/Core.h"
+#include "Loco/Component.h"
 
 namespace Loco {
 

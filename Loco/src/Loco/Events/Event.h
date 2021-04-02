@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "Core.h"
+#include "Loco/Core.h"
 
 #define BIT(x) (1 << x)
 

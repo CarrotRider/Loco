@@ -1,10 +1,16 @@
 #include "stdafx.h"
-#include "Renderer.h"
-#include "FrameBuffer.h"
-#include "RenderBuffer.h"
-#include "Camera.h"
-#include "Game.h"
-#include "CubeTexture.h"
+#include "Loco/Renderer/Renderer.h"
+#include "Loco/Renderer/Shader.h"
+#include "Loco/Renderer/FrameBuffer.h"
+#include "Loco/Renderer/RenderBuffer.h"
+#include "Loco/Components/RenderableComponent.h"
+#include "Loco/Components/DirLightComponent.h"
+#include "Loco/Components/PointLightComponent.h"
+#include "Loco/Camera.h"
+#include "Loco/Game.h"
+#include "Loco/CubeTexture.h"
+#include "VertexArray.h"
+#include "Loco/Model.h"
 
 
 #include <glad/glad.h>
@@ -91,19 +97,38 @@ namespace Loco {
 		m_ShaderDefault->Bind();
 		m_ShaderDefault->SetUniform("viewPos", GetGame()->GetCamera()->Position);
 		
-		int len = m_LightComps.size();
+		// Set DirLights
+		int len = m_DirLights.size();
 		std::string s0 = "dirLights[";
-		std::string s1 = "].Position";
-		std::string s2 = "].Direction";
-		std::string s3 = "].Color";
+		std::string s1 = "].Direction";
+		std::string s2 = "].Color";
 		for (int i = 0; i < len; i++)
 		{
 			std::string idx = std::to_string(i);
-			m_ShaderDefault->SetUniform(s0 + idx + s1, m_LightComps[i]->GetPosition());
-			m_ShaderDefault->SetUniform(s0 + idx + s2, m_LightComps[i]->GetDirection());
-			m_ShaderDefault->SetUniform(s0 + idx + s3, m_LightComps[i]->GetColor());
+			m_ShaderDefault->SetUniform(s0 + idx + s1, m_DirLights[i]->GetDirection());
+			m_ShaderDefault->SetUniform(s0 + idx + s2, m_DirLights[i]->GetColor());
+		}
+		// Set PointLights
+		len = m_PointLights.size();
+		s0 = "pointLights[";
+		s1 = "].Position";
+		s2 = "].Color";
+		std::string s3 = "].Radius";
+		std::string s4 = "].Kc";
+		std::string s5 = "].Kl";
+		std::string s6 = "].Kq";
+		for (int i = 0; i < len; i++)
+		{
+			std::string idx = std::to_string(i);
+			m_ShaderDefault->SetUniform(s0 + idx + s1, m_PointLights[i]->GetPosition());
+			m_ShaderDefault->SetUniform(s0 + idx + s2, m_PointLights[i]->GetColor());
+			m_ShaderDefault->SetUniform(s0 + idx + s3, m_PointLights[i]->GetRadius());
+			m_ShaderDefault->SetUniform(s0 + idx + s4, m_PointLights[i]->GetAttenConst());
+			m_ShaderDefault->SetUniform(s0 + idx + s5, m_PointLights[i]->GetAttenLinear());
+			m_ShaderDefault->SetUniform(s0 + idx + s6, m_PointLights[i]->GetAttenQuad());
 		}
 
+		// 绘制场景
 		for (auto& renderableComp : m_RenderebleComps)
 		{
 			renderableComp->OnDraw(m_ShaderDefault);
@@ -163,17 +188,31 @@ namespace Loco {
 		}
 	}
 
-	void Renderer::AddLightComp(LightComponent* lightComp)
+	void Renderer::AddLightComp(DirLightComponent* dirLight)
 	{
-		m_LightComps.push_back(lightComp);
+		m_DirLights.push_back(dirLight);
 	}
 
-	void Renderer::RemoveLightComp(LightComponent* lightComp)
+	void Renderer::AddLightComp(PointLightComponent* pointLight)
 	{
-		auto iter = std::find(m_LightComps.begin(), m_LightComps.end(), lightComp);
-		if (iter != m_LightComps.end())
+		m_PointLights.push_back(pointLight);
+	}
+
+	void Renderer::RemoveLightComp(DirLightComponent* dirLight)
+	{
+		auto iter = std::find(m_DirLights.begin(), m_DirLights.end(), dirLight);
+		if (iter != m_DirLights.end())
 		{
-			m_LightComps.erase(iter);
+			m_DirLights.erase(iter);
+		}
+	}
+
+	void Renderer::RemoveLightComp(PointLightComponent* pointLight)
+	{
+		auto iter = std::find(m_PointLights.begin(), m_PointLights.end(), pointLight);
+		if (iter != m_PointLights.end())
+		{
+			m_PointLights.erase(iter);
 		}
 	}
 
@@ -247,5 +286,4 @@ namespace Loco {
 
 		m_Shader_Skybox->UnBind();
 	}
-
 }

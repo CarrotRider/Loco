@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "RenderableComponent.h"
-#include "Game.h"
+#include "Loco/Game.h"
 
 namespace Loco {
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
-#include "Core.h"
-#include "Component.h"
+#include "Loco/Core.h"
+#include "Loco/Component.h"
 #include <glm/glm.hpp>
 
 namespace Loco {

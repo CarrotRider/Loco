@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "ModelComponent.h"
 #include "TransformComponent.h"
-#include "Game.h"
-#include "Renderer.h"
-#include "GameObject.h"
-#include "Component.h"
-#include "Camera.h"
-#include "Model.h"
+#include "Loco/Game.h"
+#include "Loco/Renderer/Renderer.h"
+#include "Loco/Renderer//Shader.h"
+#include "Loco/GameObject.h"
+#include "Loco/Component.h"
+#include "Loco/Camera.h"
+#include "Loco/Model.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

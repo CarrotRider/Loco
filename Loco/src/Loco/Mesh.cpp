@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "Mesh.h"
-#include "VertexArray.h"
+#include "Loco/Renderer/VertexArray.h"
 #include "Game.h"
-#include "Renderer.h"
+#include "Loco/Renderer/Renderer.h"
+#include "Loco/Renderer/Shader.h"
+#include "Texture.h"
 
 #include <glad/glad.h>
 

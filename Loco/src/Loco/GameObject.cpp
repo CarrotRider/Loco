@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameObject.h"
-#include "TransformComponent.h"
+#include "Loco/Components/TransformComponent.h"
 
 #include "Game.h"
 

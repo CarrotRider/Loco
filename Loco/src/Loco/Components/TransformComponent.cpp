@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <glad/glad.h>
 #include "TransformComponent.h"
-#include "Component.h"
+
 
 namespace Loco {
 

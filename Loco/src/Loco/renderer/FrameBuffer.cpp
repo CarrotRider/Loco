@@ -2,7 +2,7 @@
 #include "FrameBuffer.h"
 
 #include "RenderBuffer.h"
-#include "Texture.h"
+#include "Loco/Texture.h"
 
 namespace Loco {
 

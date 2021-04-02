@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "GameObject.h"
-#include "Renderer.h"
+#include "Loco/Renderer/Renderer.h"
 #include "WindowsWindow.h"
 #include "Camera.h"
-#include "ModelComponent.h"
-#include "AppEvent.h"
-#include "KeyEvent.h"
-#include "MouseEvent.h"
+#include "Loco/Components/ModelComponent.h"
+#include "Loco/Events/AppEvent.h"
+#include "Loco/Events/KeyEvent.h"
+#include "Loco/Events/MouseEvent.h"
 
 
 namespace Loco {

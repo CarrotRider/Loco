@@ -1,15 +1,13 @@
 #pragma once
 
-#include "Core.h"
-#include "VertexArray.h"
-#include "Texture.h"
-#include "Model.h"
-#include "RenderableComponent.h"
-#include "LightComponent.h"
-#include "Path.h"
+#include "Loco/Core.h"
+
+#include "Loco/Texture.h"
+#include "Loco/Path.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 namespace Loco {
 
@@ -17,6 +15,12 @@ namespace Loco {
 	class RenderBuffer;
 	class FrameBuffer;
 	class CubeTexture;
+	class RenderableComponent;
+	class DirLightComponent;
+	class PointLightComponent;
+	class Model;
+	class VertexArray;
+	class Shader;
 
 	class LOCO_API Renderer
 	{
@@ -35,8 +39,10 @@ namespace Loco {
 		void AddRenderableComp(RenderableComponent* renderableComp);
 		void RemoveRenderableComp(RenderableComponent* renderableComp);
 
-		void AddLightComp(LightComponent* lightComp);
-		void RemoveLightComp(LightComponent* lightComp);
+		void AddLightComp(DirLightComponent* dirLight);
+		void AddLightComp(PointLightComponent* pointLight);
+		void RemoveLightComp(DirLightComponent* dirLight);
+		void RemoveLightComp(PointLightComponent* pointLight);
 
 		// resources
 		void LoadTexture(const std::string& fileName, 
@@ -61,10 +67,12 @@ namespace Loco {
 		float m_Width;
 		float m_Height;
 
-		// components
+		// Renderable Components
 		std::vector<RenderableComponent*> m_RenderebleComps;
-		std::vector<LightComponent*> m_LightComps; // 方向光
-		// resources
+		// Lights
+		std::vector<DirLightComponent*> m_DirLights; 
+		std::vector<PointLightComponent*> m_PointLights;
+		// Resources
 		std::unordered_map<std::string, std::unique_ptr<Texture>> m_Textures;
 		std::unordered_map<std::string, std::unique_ptr<Model>> m_Models;
 

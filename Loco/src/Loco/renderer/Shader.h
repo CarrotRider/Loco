@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "Loco/Core.h"
 
 #include <glm/glm.hpp>
 

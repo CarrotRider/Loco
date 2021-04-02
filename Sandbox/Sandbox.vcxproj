@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>LOCO_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Loco\src\Loco\renderer\;$(SolutionDir)Loco\src\Loco\event\;$(SolutionDir)Loco\src\Loco\;$(SolutionDir)Loco\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Loco\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,7 +78,7 @@ copy $(OutDir)..\Loco\Loco.dll $(OutDir)</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>LOCO_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Loco\src\Loco\renderer\;$(SolutionDir)Loco\src\Loco\event\;$(SolutionDir)Loco\src\Loco\;$(SolutionDir)Loco\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\build\include\;$(SolutionDir)Dependencies\Assimp\include\;$(SolutionDir)Dependencies\Glad\include\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Loco\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

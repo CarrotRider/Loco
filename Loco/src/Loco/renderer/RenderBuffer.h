@@ -1,5 +1,5 @@
 #pragma once
-#include "Core.h"
+#include "Loco/Core.h"
 namespace Loco {
 
 	class LOCO_API RenderBuffer

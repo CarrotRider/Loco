@@ -1,8 +1,7 @@
 #pragma once
 #include "Core.h"
-#include "Shader.h"
+
 #include "Mesh.h"
-#include "Texture.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -11,6 +10,7 @@
 namespace Loco
 {
 	class Renderer;
+	class Shader;
 
 	class LOCO_API Model
 	{

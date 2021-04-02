@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "WindowsWindow.h"
-#include "AppEvent.h"
-#include "KeyEvent.h"
-#include "MouseEvent.h"
+#include "Loco/Events/AppEvent.h"
+#include "Loco/Events/KeyEvent.h"
+#include "Loco/Events/MouseEvent.h"
 
 #include <GLFW/glfw3.h>
 
