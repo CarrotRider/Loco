@@ -91,7 +91,7 @@ namespace Loco {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		drawSkybox();
+		//drawSkybox();
 		drawAxis();
 
 		m_ShaderDefault->Bind();
@@ -131,7 +131,7 @@ namespace Loco {
 		// 绘制场景
 		for (auto& renderableComp : m_RenderebleComps)
 		{
-			renderableComp->OnDraw(m_ShaderDefault);
+			renderableComp->Draw(m_ShaderDefault);
 		}
 
 		// Pass Final

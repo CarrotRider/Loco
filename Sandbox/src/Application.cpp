@@ -32,7 +32,7 @@ protected:
 		//dirLight->GetTransform()->SetRotation(glm::vec3(50.0f, -30.0f, 0.0f));
 
 		pointLight = new GameObject(this);
-		ModelComponent* modelPointComp = new ModelComponent(pointLight, new Model(m_Renderer, "assets/models/arrow.obj"));
+		ModelComponent* modelPointComp = new ModelComponent(pointLight, new Model(m_Renderer, "assets/models/default_sphere.obj"));
 		PointLightComponent* pointLightComp = new PointLightComponent(pointLight);
 		pointLight->AddComponent(modelPointComp);
 		pointLight->AddComponent(pointLightComp);

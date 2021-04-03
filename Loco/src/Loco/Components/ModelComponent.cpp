@@ -34,7 +34,7 @@ namespace Loco {
 
 	}
 
-	void ModelComponent::OnDraw(Shader* shader)
+	void ModelComponent::Draw(Shader* shader)
 	{
 
 		if (m_Shader != nullptr)

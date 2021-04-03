@@ -35,5 +35,6 @@
     <None Include="assets\shaders\sky_box.vs" />
     <None Include="assets\shaders\test.fs" />
     <None Include="assets\shaders\test.vs" />
+    <None Include="assets\shaders\default_no_texture.fs" />
   </ItemGroup>
 </Project>
