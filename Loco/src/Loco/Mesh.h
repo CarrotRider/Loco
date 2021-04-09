@@ -27,6 +27,7 @@ namespace Loco {
 		std::vector<Vertex> m_Vertices;
 		std::vector<unsigned int> m_Indices;
 		std::vector<std::string> m_TextureKeys;
+
 	private:
 		VertexArray* m_VAO;
 		Renderer* m_Renderer;

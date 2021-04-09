@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Shader.h"
-
+#include "Loco/Path.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -15,8 +15,8 @@ namespace Loco {
 		fragSrcFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 		try
 		{
-			vertSrcFile.open(vertPath);
-			fragSrcFile.open(fragPath);
+			vertSrcFile.open(SHADER_PATH + vertPath);
+			fragSrcFile.open(SHADER_PATH + fragPath);
 			std::stringstream vertSrcStream, fragSrcStream;
 			vertSrcStream << vertSrcFile.rdbuf();
 			fragSrcStream << fragSrcFile.rdbuf();

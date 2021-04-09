@@ -8,6 +8,7 @@
 #include "Loco/Events/AppEvent.h"
 #include "Loco/Events/KeyEvent.h"
 #include "Loco/Events/MouseEvent.h"
+#include <GLFW/glfw3.h>
 
 
 namespace Loco {

@@ -25,7 +25,7 @@ protected:
 		//DirLightComponent* lightComp = new DirLightComponent(dirLight);
 		//dirLight->AddComponent(modelComp);
 		//dirLight->AddComponent(lightComp);
-		Shader* lightShader = new Shader("assets/shaders/light.vs", "assets/shaders/light.fs");
+		Shader* lightShader = GetRenderer()->GetShader("light.vs", "light.fs").get();
 		//modelComp->SetShader(lightShader);
 		////lightComp->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 		////light->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));

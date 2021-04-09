@@ -6,7 +6,7 @@
 #include "Loco/Path.h"
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
 
 namespace Loco {
@@ -50,6 +50,8 @@ namespace Loco {
 		Texture* GetTexture(const std::string& fileName) const;
 		void LoadModel(const std::string& fileName);
 		Model* GetModel(const std::string& fileName) const;
+		void LoadShader(const std::string& vs, const std::string& fs);
+		std::shared_ptr<Shader> GetShader(const std::string& vs, const std::string& fs);
 
 		// Getter & Setter
 		void SetWindowWidth(float width) { m_Width = width; }
@@ -75,6 +77,8 @@ namespace Loco {
 		// Resources
 		std::unordered_map<std::string, std::unique_ptr<Texture>> m_Textures;
 		std::unordered_map<std::string, std::unique_ptr<Model>> m_Models;
+		std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
+		//std::unordered_map<std::string, std::shared_ptr<Material>> m_Materials;
 
 		// Final Pass
 		float m_ScreenPanel[30]{
@@ -92,7 +96,7 @@ namespace Loco {
 		FrameBuffer* m_FrameBuffer;
 		Texture* m_ScreenTexture;
 		RenderBuffer* m_RenderBuffer;
-		Shader* m_ShaderFinal;
+		std::shared_ptr<Shader> m_ShaderFinal;
 		// 坐标轴
 		const glm::vec3 m_Vecs_Axis[6] {
 			glm::vec3(-500.0f, 0.0f, 0.0f), glm::vec3(500.0f, 0.0f, 0.0f),
@@ -101,7 +105,7 @@ namespace Loco {
 		};
 		const unsigned m_Indices_Axis[6]{ 0, 1, 2, 3, 4, 5 };
 		std::unique_ptr<VertexArray> m_VAO_Axis;
-		std::unique_ptr<Shader> m_Shader_Axis;
+		std::shared_ptr<Shader> m_Shader_Axis;
 		// 天空盒
 		const float m_Vecs_Skybox[3 * 6 * 6]{
 			// positions          
@@ -163,11 +167,11 @@ namespace Loco {
 			CUBE_TEXTURE_PATH  "front.jpg",
 			CUBE_TEXTURE_PATH  "back.jpg" };
 		std::unique_ptr<VertexArray> m_VAO_Skybox;
-		std::unique_ptr<Shader> m_Shader_Skybox;
+		std::shared_ptr<Shader> m_Shader_Skybox;
 		std::unique_ptr<CubeTexture> m_CubeTexture;
 		
 		//
-		Shader* m_ShaderDefault;
+		std::shared_ptr<Shader> m_ShaderDefault;
 	};
 }
 

@@ -5,9 +5,10 @@
 #include <glm/glm.hpp>
 
 namespace Loco {
-	
+	class Renderer;
 	class LOCO_API Shader
 	{
+	friend Renderer;
 	public:
 		Shader(const std::string& vertPath, const std::string& fragPath);
 		virtual ~Shader();

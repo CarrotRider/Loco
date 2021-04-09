@@ -57,16 +57,13 @@ namespace Loco {
 		// Pass Final
 		m_ScreenVA = new VertexArray(m_ScreenPanel, 6, m_Indices_Screen, 6, 
 			BufferLayout::POS_TEX);
-		m_ShaderFinal = new Shader("assets/shaders/final_pass.vs",
-			"assets/shaders/final_pass.fs");
-
+		m_ShaderFinal = GetShader("final_pass.vs", "final_pass.fs");
 		// Init Scene
 		initAxis();
 		initSkybox();
 
 		// Init Custom
-		m_ShaderDefault = new Shader("assets/shaders/default.vs", 
-			"assets/shaders/default.fs");
+		m_ShaderDefault = GetShader("default.vs", "default.fs");
 	}
 
 	void Renderer::ShutDown()
@@ -75,10 +72,7 @@ namespace Loco {
 		delete m_FrameBuffer;
 		delete m_ScreenTexture;
 		delete m_RenderBuffer;
-		delete m_ShaderFinal;
 
-		//
-		delete m_ShaderDefault;
 		glfwTerminate();
 	}
 
@@ -131,7 +125,7 @@ namespace Loco {
 		// 绘制场景
 		for (auto& renderableComp : m_RenderebleComps)
 		{
-			renderableComp->Draw(m_ShaderDefault);
+			renderableComp->Draw(m_ShaderDefault.get());
 		}
 
 		// Pass Final
@@ -171,6 +165,25 @@ namespace Loco {
 	{
 		auto iter = m_Models.find(fileName);
 		return iter == m_Models.end() ? nullptr : (*iter).second.get();
+	}
+
+	void Renderer::LoadShader(const std::string& vs, const std::string& fs)
+	{
+		std::string key = vs + fs;
+		m_Shaders.insert(std::pair<std::string, std::shared_ptr<Shader>>(
+			key, std::move(std::make_shared<Shader>(vs, fs))));
+	}
+
+	std::shared_ptr<Shader> Renderer::GetShader(const std::string& vs, const std::string& fs)
+	{
+		std::string key = vs + fs;
+		auto iter = m_Shaders.find(key);
+		if (iter == m_Shaders.end())
+		{
+			LoadShader(vs, fs);
+		}
+		iter = m_Shaders.find(key);
+		return iter == m_Shaders.end() ? nullptr : (*iter).second;
 	}
 
 	void Renderer::AddRenderableComp(RenderableComponent* renderableComp)
@@ -220,8 +233,7 @@ namespace Loco {
 	{
 		m_VAO_Axis = std::make_unique<VertexArray>((float*)m_Vecs_Axis, 6,
 			m_Indices_Axis, 6, BufferLayout::POS);
-		m_Shader_Axis = std::make_unique<Shader>("./assets/shaders/axis.vs",
-			"./assets/shaders/axis.fs");
+		m_Shader_Axis = GetShader("axis.vs", "axis.fs");
 	}
 
 	void Renderer::drawAxis() const
@@ -254,8 +266,7 @@ namespace Loco {
 	{
 		m_VAO_Skybox = std::make_unique<VertexArray>(m_Vecs_Skybox, 36,
 			m_Indices_Axis, 26, BufferLayout::POS);
-		m_Shader_Skybox = std::make_unique<Shader>("./assets/shaders/sky_box.vs",
-			"./assets/shaders/sky_box.fs");
+		m_Shader_Skybox = GetShader("sky_box.vs", "sky_box.fs");
 		m_CubeTexture = std::make_unique<CubeTexture>();
 		m_CubeTexture->Load(m_SkyboxTexPaths);
 	}
