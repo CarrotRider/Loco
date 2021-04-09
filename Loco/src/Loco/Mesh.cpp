@@ -30,37 +30,27 @@ namespace Loco {
 
 	void Mesh::Draw(Shader* shader)
 	{
-		unsigned int diffuseIdx = 0;
-		unsigned int specularIdx = 0;
-		unsigned int normalIdx = 0;
-
-		std::string diffName = "material.SpecularTexuter_";
-		std::string specName = "material.SpecularTexuter_";
-		std::string normName = "material.NormalTexuter_";
 
 		for (unsigned i = 0; i < m_TextureKeys.size(); i++)
 		{
 			Texture* tex = m_Renderer->GetTexture(m_TextureKeys[i]);
-			std::string name, idx;
 			Texture::Type type = tex->GetType();
 			if (type == Texture::Type::DIFFUSE)
 			{
-				name = diffName;
-				idx = std::to_string(diffuseIdx++);
+				tex->Active(0);
 			}
 			else if (type == Texture::Type::SPECULAR)
 			{
-				name = specName;
-				idx = std::to_string(specularIdx++);
+				tex->Active(1);
 			}
 			else if (type == Texture::Type::NORMAL)
 			{
-				name = normName;
-				idx = std::to_string(normalIdx++);
+				tex->Active(2);
 			}
-			tex->Active(i);
-			shader->SetUniform(name + idx, i);
 		}
+		shader->SetUniform("material.DiffuseTexutre_0", 0);
+		shader->SetUniform("material.SpecularTexture_0", 1);
+		shader->SetUniform("material.NormalTexture_0", 2);
 		shader->SetUniform("material.Shininess", 32.0f);
 
 		glBindVertexArray(m_VAO->GetID());
