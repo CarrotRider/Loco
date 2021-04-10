@@ -94,6 +94,8 @@ namespace Loco {
 		{
 			Shader* shader = item.second->GetShader();
 			shader->Bind();
+
+			shader->SetUniform("viewPos", GetGame()->GetCamera()->Position);
 			// Set DirLights
 			int len = m_DirLights.size();
 			std::string s0 = "dirLights[";
