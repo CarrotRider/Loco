@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Loco/Material.h"
 #include "Loco/Mat_Default_Tex.h"
+#include "Loco/Mat_Default_No_Tex.h"
 #include "Loco/Components/DirLightComponent.h"
 #include "Loco/Components/PointLightComponent.h"
 
@@ -70,15 +71,23 @@ namespace Loco {
 			{
 				material->GetNormalTex()->Active(3);
 			}
-
-			glBindVertexArray(m_VAO->GetID());
-			glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
+		}
+		else if (m_Material->GetType() == MaterialType::PHONG_SOILD_COLOR)
+		{
+			Mat_Default_No_Tex* material = dynamic_cast<Mat_Default_No_Tex*>(m_Material.get());
+			shader->SetUniform("material.Diffuse", material->GetDiffuseColor());
+			shader->SetUniform("material.Specular", material->GetSpecularColor());
+			shader->SetUniform("material.Shininess", material->GetShininess());
 		}
 		else
 		{
 			std::cout << "ERROR::DO NOT SUPPORT MATERIAL" << std::endl;
 		}
+
+		glBindVertexArray(m_VAO->GetID());
+		glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
 		shader->UnBind();
 	}
 }

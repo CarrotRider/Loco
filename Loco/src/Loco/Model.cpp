@@ -5,6 +5,7 @@
 #include "Loco/Renderer/Shader.h"
 #include "Texture.h"
 #include "Loco/Mat_Default_Tex.h"
+#include "Loco/Mat_Default_No_Tex.h"
 
 #include "Path.h"
 
@@ -99,10 +100,18 @@ namespace Loco {
 			{
 				// todo: 添加默认单色 Phong 材质
 				std::cout << "No Diffuse Texture" << std::endl;
+				std::shared_ptr<Shader> shader = m_Renderer->GetShader("default.vs", "default_no_texture.fs");
+				//float shininess;
+				//aiReturn succ = material->Get(AI_MATKEY_SHININESS, shininess);
+				//if (succ != aiReturn_SUCCESS)
+				//	shininess = 32.0f;
+				mat = std::make_shared<Mat_Default_No_Tex>(shader);
+				m_Renderer->AddMaterial(mat, "default_no_tex");
+				return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default_no_tex"));
 			}
 			else
 			{
-				// todo: 目前各种纹理只加载一张
+				// 目前各种纹理只加载一张
 
 				// 单纹理 Phong 材质
 				std::shared_ptr<Shader> shader = m_Renderer->GetShader("default.vs", "default.fs");
@@ -115,13 +124,18 @@ namespace Loco {
 				material->Get(AI_MATKEY_SHININESS, shininess);
 				mat = std::make_shared<Mat_Default_Tex>(shader, diffuse, specular, normal, shininess);
 				m_Renderer->AddMaterial(mat, "default");
+				return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default"));
 			}
 		}
 		else
 		{
-			// todo: 添加默认单色 Phong 材质
+			std::cout << "No Diffuse Texture" << std::endl;
+			std::shared_ptr<Shader> shader = m_Renderer->GetShader("default.vs", "default_no_texture.fs");
+			mat = std::make_shared<Mat_Default_No_Tex>(shader);
+			m_Renderer->AddMaterial(mat, "default_no_tex");
+			return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default_no_tex"));
 		}
-		return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default"));
+		
 	}
 
 	std::shared_ptr<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type)
