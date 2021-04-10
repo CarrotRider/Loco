@@ -34,14 +34,8 @@ namespace Loco {
 
 	}
 
-	void ModelComponent::Draw(Shader* shader)
+	void ModelComponent::Draw()
 	{
-
-		if (m_Shader != nullptr)
-		{
-			shader = m_Shader;
-		}
-
 		glm::mat4 model(1.0f);
 		model = glm::rotate(model, 
 			glm::radians(GetOwner()->GetTransform()->GetRotation(DIR::X)), 
@@ -60,16 +54,8 @@ namespace Loco {
 		glm::mat4 projection(1.0f);
 		projection = glm::perspective(glm::radians(GetGame()->GetCamera()->Zoom),
 			GetRenderer()->GetWindowWidth()/GetRenderer()->GetWindowHeight(), 0.1f, 100.0f);
-		
-		shader->Bind();
 
-		shader->SetUniform("model", model);
-		shader->SetUniform("view", view);
-		shader->SetUniform("projection", projection);
-
-		m_Model->Draw(shader);
-		
-		shader->UnBind();
+		m_Model->Draw(model, view, projection);
 	}
 
 }

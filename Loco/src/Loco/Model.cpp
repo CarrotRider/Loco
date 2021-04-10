@@ -4,17 +4,18 @@
 #include "Loco/Renderer/Renderer.h"
 #include "Loco/Renderer/Shader.h"
 #include "Texture.h"
+#include "Loco/Mat_Default_Tex.h"
 
 #include "Path.h"
 
 
 namespace Loco {
 
-	void Model::Draw(Shader* shader)
+	void Model::Draw(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 	{
 		for (auto& mesh : m_Meshes)
 		{
-			mesh.Draw(shader);
+			mesh->Draw(model, view, projection);
 		}
 	}
 
@@ -47,13 +48,10 @@ namespace Loco {
 		}
 	}
 
-	Mesh Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
+	Mesh* Model::ProcessMesh(const aiMesh* mesh, const aiScene* scene)
 	{
-		std::vector<Mesh::Vertex> vertices;
-		std::vector<unsigned int> indices;
-		std::vector<std::string> textureKeys;
-
 		// 获取顶点数据
+		std::vector<Mesh::Vertex> vertices;
 		for (unsigned i = 0; i < mesh->mNumVertices; i++)
 		{
 			Mesh::Vertex vertex;
@@ -79,6 +77,7 @@ namespace Loco {
 		}
 
 		// 获取顶点索引
+		std::vector<unsigned int> indices;
 		for (unsigned i = 0; i < mesh->mNumFaces; i++)
 		{
 			aiFace face = mesh->mFaces[i];
@@ -89,21 +88,46 @@ namespace Loco {
 		}
 
 		// 获取纹理
+		std::shared_ptr<Material> mat = nullptr;
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			std::vector<std::string> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
-			std::vector<std::string> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR);
-			textureKeys.insert(textureKeys.end(), diffuseMaps.begin(), diffuseMaps.end());
-			textureKeys.insert(textureKeys.end(), specularMaps.begin(), specularMaps.end());
+			int diffuseNum = material->GetTextureCount(aiTextureType_DIFFUSE);
+			int specularNum = material->GetTextureCount(aiTextureType_SPECULAR);
+			int normalNum = material->GetTextureCount(aiTextureType_NORMALS);
+			if (diffuseNum == 0)
+			{
+				// todo: 添加默认单色 Phong 材质
+				std::cout << "No Diffuse Texture" << std::endl;
+			}
+			else
+			{
+				// todo: 目前各种纹理只加载一张
+
+				// 单纹理 Phong 材质
+				std::shared_ptr<Shader> shader = m_Renderer->GetShader("default.vs", "default.fs");
+				std::shared_ptr<Texture> diffuse = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
+				//std::shared_ptr<Texture> diffuse = nullptr;
+				std::shared_ptr<Texture> specular = LoadMaterialTextures(material, aiTextureType_SPECULAR);
+				//std::shared_ptr<Texture> normal = LoadMaterialTextures(material, aiTextureType_NORMALS);
+				std::shared_ptr<Texture> normal = nullptr;
+				float shininess;
+				material->Get(AI_MATKEY_SHININESS, shininess);
+				mat = std::make_shared<Mat_Default_Tex>(shader, diffuse, specular, normal, shininess);
+				m_Renderer->AddMaterial(mat, "default");
+			}
 		}
-		return Mesh(m_Renderer, vertices, indices, textureKeys);
+		else
+		{
+			// todo: 添加默认单色 Phong 材质
+		}
+		return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default"));
 	}
 
-	std::vector<std::string> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type)
+	std::shared_ptr<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type)
 	{
-		std::vector<std::string> textureKeys;
 		Texture::Type typeLoco = Texture::Type::NONE;
+		
 		switch (type)
 		{
 		case aiTextureType_NONE:
@@ -152,14 +176,14 @@ namespace Loco {
 			break;
 		}
 
-		for (unsigned i = 0; i < mat->GetTextureCount(type); i++)
-		{
+//		for (unsigned i = 0; i < mat->GetTextureCount(type); i++)
+//		{
 			aiString str;
-			mat->GetTexture(type, i, &str);
+			mat->GetTexture(type, 0, &str);
 			std::string path = MODEL_PATH + std::string(str.C_Str());
 			m_Renderer->LoadTexture(path, typeLoco);
-			textureKeys.push_back(path);
-		}
-		return textureKeys;
+			std::shared_ptr<Texture> texture = std::shared_ptr<Texture>(m_Renderer->GetTexture(path));
+//		}
+		return texture;
 	}
 }

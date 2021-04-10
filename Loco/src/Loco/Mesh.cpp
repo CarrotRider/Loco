@@ -5,20 +5,24 @@
 #include "Loco/Renderer/Renderer.h"
 #include "Loco/Renderer/Shader.h"
 #include "Texture.h"
+#include "Loco/Material.h"
+#include "Loco/Mat_Default_Tex.h"
+#include "Loco/Components/DirLightComponent.h"
+#include "Loco/Components/PointLightComponent.h"
 
 #include <glad/glad.h>
 
 namespace Loco {
 
-	Mesh::Mesh(Renderer* renderer, std::vector<Vertex> vertices, 
-		std::vector<unsigned> indices, 
-		std::vector<std::string> texturesKeys)
+	Mesh::Mesh(Renderer* renderer, 
+		const std::vector<Vertex>& vertices,
+		const std::vector<unsigned>& indices,
+		const std::shared_ptr<Material>& material)
 		: m_Renderer(renderer)
-	{
-		this->m_Vertices = vertices;
-		this->m_Indices = indices;
-		this->m_TextureKeys = texturesKeys;
-		
+		, m_Vertices(vertices)
+		, m_Indices(indices)
+		, m_Material(material)
+	{	
 		m_VAO = new VertexArray(m_Vertices.data(), m_Vertices.size(),
 			m_Indices.data(), m_Indices.size(), BufferLayout::POS_NORMAL_TEX);
 	}
@@ -28,33 +32,53 @@ namespace Loco {
 		//delete m_VAO;
 	}
 
-	void Mesh::Draw(Shader* shader)
+	void Mesh::Draw(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 	{
-
-		for (unsigned i = 0; i < m_TextureKeys.size(); i++)
+		if (m_Material == nullptr)
 		{
-			Texture* tex = m_Renderer->GetTexture(m_TextureKeys[i]);
-			Texture::Type type = tex->GetType();
-			if (type == Texture::Type::DIFFUSE)
-			{
-				tex->Active(0);
-			}
-			else if (type == Texture::Type::SPECULAR)
-			{
-				tex->Active(1);
-			}
-			else if (type == Texture::Type::NORMAL)
-			{
-				tex->Active(2);
-			}
+			std::cout << "Material is NULL" << std::endl;
+			return;
 		}
-		shader->SetUniform("material.DiffuseTexutre_0", 0);
-		shader->SetUniform("material.SpecularTexture_0", 1);
-		shader->SetUniform("material.NormalTexture_0", 2);
-		shader->SetUniform("material.Shininess", 32.0f);
+		Shader* shader = m_Material->GetShader();
+		shader->Bind();
+		
+		// 设置 MVP
+		shader->SetUniform("model", model);
+		shader->SetUniform("view", view);
+		shader->SetUniform("projection", projection);
 
-		glBindVertexArray(m_VAO->GetID());
-		glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		// 灯光信息已经在 Renderer 中统一进行设置
+
+		// 设置材质信息
+		if (m_Material->GetType() == MaterialType::PHONE_TEXTURE)
+		{
+			Mat_Default_Tex* material = dynamic_cast<Mat_Default_Tex*>(m_Material.get());
+			shader->SetUniform("material.DiffuseTexutre_0", 0);
+			shader->SetUniform("material.SpecularTexture_0", 1);
+			shader->SetUniform("material.NormalTexture_0", 2);
+			shader->SetUniform("material.Shininess", material->GetShininess());
+
+			if (material->GetDiffuseTex() != nullptr)
+			{
+				material->GetDiffuseTex()->Active(0);
+			}
+			if (material->GetSpecularTex() != nullptr)
+			{
+				material->GetSpecularTex()->Active(1);
+			}
+			if (material->GetNormalTex() != nullptr)
+			{
+				material->GetNormalTex()->Active(3);
+			}
+
+			glBindVertexArray(m_VAO->GetID());
+			glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+		}
+		else
+		{
+			std::cout << "ERROR::DO NOT SUPPORT MATERIAL" << std::endl;
+		}
+		shader->UnBind();
 	}
 }

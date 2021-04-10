@@ -11,6 +11,7 @@
 #include "Loco/CubeTexture.h"
 #include "VertexArray.h"
 #include "Loco/Model.h"
+#include "Loco/Material.h"
 
 
 #include <glad/glad.h>
@@ -87,52 +88,56 @@ namespace Loco {
 		
 		//drawSkybox();
 		drawAxis();
-
-		m_ShaderDefault->Bind();
-		m_ShaderDefault->SetUniform("viewPos", GetGame()->GetCamera()->Position);
 		
-		// Set DirLights
-		int len = m_DirLights.size();
-		std::string s0 = "dirLights[";
-		std::string s1 = "].Direction";
-		std::string s2 = "].Color";
-		for (int i = 0; i < len; i++)
+		// 对场景内所有的 shader 设置光照
+		for (auto& item : m_Materials)
 		{
-			std::string idx = std::to_string(i);
-			m_ShaderDefault->SetUniform(s0 + idx + s1, m_DirLights[i]->GetDirection());
-			m_ShaderDefault->SetUniform(s0 + idx + s2, m_DirLights[i]->GetColor());
-		}
-		// Set PointLights
-		len = m_PointLights.size();
-		s0 = "pointLights[";
-		s1 = "].Position";
-		s2 = "].Color";
-		std::string s3 = "].Radius";
-		std::string s4 = "].Kc";
-		std::string s5 = "].Kl";
-		std::string s6 = "].Kq";
-		for (int i = 0; i < len; i++)
-		{
-			std::string idx = std::to_string(i);
-			m_ShaderDefault->SetUniform(s0 + idx + s1, m_PointLights[i]->GetPosition());
-			m_ShaderDefault->SetUniform(s0 + idx + s2, m_PointLights[i]->GetColor());
-			m_ShaderDefault->SetUniform(s0 + idx + s3, m_PointLights[i]->GetRadius());
-			m_ShaderDefault->SetUniform(s0 + idx + s4, m_PointLights[i]->GetAttenConst());
-			m_ShaderDefault->SetUniform(s0 + idx + s5, m_PointLights[i]->GetAttenLinear());
-			m_ShaderDefault->SetUniform(s0 + idx + s6, m_PointLights[i]->GetAttenQuad());
+			Shader* shader = item.second->GetShader();
+			shader->Bind();
+			// Set DirLights
+			int len = m_DirLights.size();
+			std::string s0 = "dirLights[";
+			std::string s1 = "].Direction";
+			std::string s2 = "].Color";
+			for (int i = 0; i < len; i++)
+			{
+				std::string idx = std::to_string(i);
+				shader->SetUniform(s0 + idx + s1, m_DirLights[i]->GetDirection());
+				shader->SetUniform(s0 + idx + s2, m_DirLights[i]->GetColor());
+			}
+			// Set PointLights
+			len = m_PointLights.size();
+			s0 = "pointLights[";
+			s1 = "].Position";
+			s2 = "].Color";
+			std::string s3 = "].Radius";
+			std::string s4 = "].Kc";
+			std::string s5 = "].Kl";
+			std::string s6 = "].Kq";
+			for (int i = 0; i < len; i++)
+			{
+				std::string idx = std::to_string(i);
+				shader->SetUniform(s0 + idx + s1, m_PointLights[i]->GetPosition());
+				shader->SetUniform(s0 + idx + s2, m_PointLights[i]->GetColor());
+				shader->SetUniform(s0 + idx + s3, m_PointLights[i]->GetRadius());
+				shader->SetUniform(s0 + idx + s4, m_PointLights[i]->GetAttenConst());
+				shader->SetUniform(s0 + idx + s5, m_PointLights[i]->GetAttenLinear());
+				shader->SetUniform(s0 + idx + s6, m_PointLights[i]->GetAttenQuad());
+			}
+			shader->UnBind();
 		}
 
 		// 绘制场景
 		for (auto& renderableComp : m_RenderebleComps)
 		{
-			renderableComp->Draw(m_ShaderDefault.get());
+			renderableComp->Draw();
 		}
 
 		// Pass Final
 		m_FrameBuffer->UnBind();
 		
 		glDisable(GL_DEPTH_TEST);
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		m_ShaderFinal->Bind();
@@ -184,6 +189,17 @@ namespace Loco {
 		}
 		iter = m_Shaders.find(key);
 		return iter == m_Shaders.end() ? nullptr : (*iter).second;
+	}
+
+	void Renderer::AddMaterial(const std::shared_ptr<Material>& material, const std::string& name)
+	{
+		m_Materials.insert(std::pair<std::string, std::shared_ptr<Material>>(name, material));
+	}
+
+	std::shared_ptr<Material> Renderer::GetMaterial(const std::string& name)
+	{
+		auto iter = m_Materials.find(name);
+		return iter == m_Materials.end() ? nullptr : (*iter).second;
 	}
 
 	void Renderer::AddRenderableComp(RenderableComponent* renderableComp)

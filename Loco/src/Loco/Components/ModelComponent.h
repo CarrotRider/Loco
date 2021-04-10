@@ -15,7 +15,7 @@ namespace Loco {
 		virtual ~ModelComponent() override;
 
 		virtual void OnUpdate(float deltaTime) override;
-		virtual void Draw(Shader* shader) override;
+		virtual void Draw() override;
 
 		void SetModel(Model* model) { m_Model = model; }
 		Model* GetModel() { return m_Model; }

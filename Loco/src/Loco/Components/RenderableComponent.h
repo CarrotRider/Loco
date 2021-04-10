@@ -16,7 +16,7 @@ namespace Loco {
 		virtual ~RenderableComponent() {};
 
 		virtual void OnUpdate(float deltaTime) = 0;
-		virtual void Draw(Shader* shader) = 0;
+		virtual void Draw() = 0;
 
 		Renderer* GetRenderer();
 

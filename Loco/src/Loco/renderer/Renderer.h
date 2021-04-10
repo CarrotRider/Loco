@@ -21,6 +21,7 @@ namespace Loco {
 	class Model;
 	class VertexArray;
 	class Shader;
+	class Material;
 
 	class LOCO_API Renderer
 	{
@@ -48,10 +49,15 @@ namespace Loco {
 		void LoadTexture(const std::string& fileName, 
 			Texture::Type type = Texture::Type::NONE);
 		Texture* GetTexture(const std::string& fileName) const;
+		
 		void LoadModel(const std::string& fileName);
 		Model* GetModel(const std::string& fileName) const;
+		
 		void LoadShader(const std::string& vs, const std::string& fs);
 		std::shared_ptr<Shader> GetShader(const std::string& vs, const std::string& fs);
+		
+		void AddMaterial(const std::shared_ptr<Material>& material, const std::string& name);
+		std::shared_ptr<Material> GetMaterial(const std::string& name);
 
 		// Getter & Setter
 		void SetWindowWidth(float width) { m_Width = width; }
@@ -71,14 +77,16 @@ namespace Loco {
 
 		// Renderable Components
 		std::vector<RenderableComponent*> m_RenderebleComps;
+	public:
 		// Lights
 		std::vector<DirLightComponent*> m_DirLights; 
 		std::vector<PointLightComponent*> m_PointLights;
+	private:
 		// Resources
 		std::unordered_map<std::string, std::unique_ptr<Texture>> m_Textures;
 		std::unordered_map<std::string, std::unique_ptr<Model>> m_Models;
 		std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
-		//std::unordered_map<std::string, std::shared_ptr<Material>> m_Materials;
+		std::unordered_map<std::string, std::shared_ptr<Material>> m_Materials;
 
 		// Final Pass
 		float m_ScreenPanel[30]{

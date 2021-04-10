@@ -11,6 +11,7 @@ namespace Loco
 {
 	class Renderer;
 	class Shader;
+	class Texture;
 
 	class LOCO_API Model
 	{
@@ -21,15 +22,15 @@ namespace Loco
 			LoadModel(path);
 		}
 
-		void Draw(Shader* shader);
+		void Draw(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
 	private:
 		void LoadModel(const std::string& path);
 		void ProcessNode(const aiNode* node, const aiScene* scene);
-		Mesh ProcessMesh(const aiMesh* mesh, const aiScene* scene);
-		std::vector<std::string> LoadMaterialTextures(
+		Mesh* ProcessMesh(const aiMesh* mesh, const aiScene* scene);
+		std::shared_ptr<Texture> LoadMaterialTextures(
 			aiMaterial* mat, aiTextureType type);
 	private:
-		std::vector<Mesh> m_Meshes;
+		std::vector<Mesh*> m_Meshes;
 		Renderer* m_Renderer;
 		//std::string m_Dir;
 	};
