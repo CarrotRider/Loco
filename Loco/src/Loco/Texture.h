@@ -9,13 +9,13 @@ namespace Loco {
 		
 		enum class Type
 		{
-			NONE ,DIFFUSE, SPECULAR, NORMAL
+			NONE ,DIFFUSE, SPECULAR, NORMAL, SHADOW
 		};
 
 		Texture();
 		Texture(const std::string& texPath, Type type);
 		Texture(const char* texPath, Type type);
-		Texture(int width, int height);
+		Texture(int width, int height, Texture::Type type);
 		virtual ~Texture();
 
 		void Load(const std::string& path);

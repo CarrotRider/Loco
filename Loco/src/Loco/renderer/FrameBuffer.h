@@ -17,8 +17,7 @@ namespace Loco {
 		void UnBind();
 
 		void BindTexture(const Texture& texture, 
-			unsigned attachment = GL_COLOR_ATTACHMENT0,
-			unsigned textarget = GL_TEXTURE_2D);
+			unsigned attachment = GL_COLOR_ATTACHMENT0);
 		void BindRenderBuffer(const RenderBuffer& renderBuffer);
 
 		unsigned int GetID() const { return m_ID; }

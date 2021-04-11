@@ -27,10 +27,10 @@ namespace Loco {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void FrameBuffer::BindTexture(const Texture& texture, unsigned attachment /*= GL_COLOR_ATTACHMENT0*/, unsigned textarget /*= GL_TEXTURE_2D*/)
+	void FrameBuffer::BindTexture(const Texture& texture, unsigned attachment /*= GL_COLOR_ATTACHMENT0*/)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_ID);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, textarget, texture.GetID(), 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, texture.GetID(), 0);
 	}
 
 	void FrameBuffer::BindRenderBuffer(const RenderBuffer& renderBuffer)
