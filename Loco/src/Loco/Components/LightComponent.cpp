@@ -10,7 +10,7 @@ namespace Loco {
 
 	LightComponent::LightComponent(GameObject* owner, int updateOrder /*= 100*/)
 		: Component(owner, updateOrder)
-		, m_Color(glm::vec3(1.0f, 1.0f, 1.0f))
+		, m_Color(glm::vec3(0.5f, 0.5f, 0.5f))
 	{
 	}
 

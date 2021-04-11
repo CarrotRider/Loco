@@ -18,6 +18,7 @@ namespace Loco
 	public:
 		Model(Renderer* renderer, const std::string& path)
 			: m_Renderer(renderer)
+			, m_Dir(path)
 		{
 			LoadModel(path);
 		}
@@ -32,7 +33,7 @@ namespace Loco
 	private:
 		std::vector<Mesh*> m_Meshes;
 		Renderer* m_Renderer;
-		//std::string m_Dir;
+		std::string m_Dir;
 	};
 }
 

@@ -16,6 +16,9 @@ protected:
 	{
 		go = new GameObject(this);
 		go->AddComponent(new ModelComponent(go, new Model(m_Renderer, "assets/models/wood_cube.obj")));
+		go->GetTransform()->SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+		ground = new GameObject(this);
+		ground->AddComponent(new ModelComponent(ground, new Model(m_Renderer, "assets/models/wood_ground.obj")));
 		//go->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));
 		//go->GetTransform()->SetRotation(glm::vec3(30.0f, 0.0f, 0.0f));
 		//go->GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
@@ -43,6 +46,7 @@ protected:
 	}
 private:
 	GameObject* go;
+	GameObject* ground;
 	// GameObject* dirLight;
 	GameObject* pointLight;
 };

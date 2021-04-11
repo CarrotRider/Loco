@@ -105,9 +105,12 @@ namespace Loco {
 				//aiReturn succ = material->Get(AI_MATKEY_SHININESS, shininess);
 				//if (succ != aiReturn_SUCCESS)
 				//	shininess = 32.0f;
+				aiString name;
+				material->Get(AI_MATKEY_NAME, name);
+				std::string key = m_Dir + name.C_Str();
 				mat = std::make_shared<Mat_Default_No_Tex>(shader);
-				m_Renderer->AddMaterial(mat, "default_no_tex");
-				return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default_no_tex"));
+				m_Renderer->AddMaterial(mat, key);
+				return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial(key));
 			}
 			else
 			{
@@ -116,15 +119,17 @@ namespace Loco {
 				// 单纹理 Phong 材质
 				std::shared_ptr<Shader> shader = m_Renderer->GetShader("default.vs", "default.fs");
 				std::shared_ptr<Texture> diffuse = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
-				//std::shared_ptr<Texture> diffuse = nullptr;
 				std::shared_ptr<Texture> specular = LoadMaterialTextures(material, aiTextureType_SPECULAR);
 				//std::shared_ptr<Texture> normal = LoadMaterialTextures(material, aiTextureType_NORMALS);
 				std::shared_ptr<Texture> normal = nullptr;
 				float shininess;
 				material->Get(AI_MATKEY_SHININESS, shininess);
 				mat = std::make_shared<Mat_Default_Tex>(shader, diffuse, specular, normal, shininess);
-				m_Renderer->AddMaterial(mat, "default");
-				return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default"));
+				aiString name;
+				material->Get(AI_MATKEY_NAME, name);
+				std::string key = m_Dir + name.C_Str();
+				m_Renderer->AddMaterial(mat, key);
+				return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial(key));
 			}
 		}
 		else
@@ -132,8 +137,8 @@ namespace Loco {
 			std::cout << "No Diffuse Texture" << std::endl;
 			std::shared_ptr<Shader> shader = m_Renderer->GetShader("default.vs", "default_no_texture.fs");
 			mat = std::make_shared<Mat_Default_No_Tex>(shader);
-			m_Renderer->AddMaterial(mat, "default_no_tex");
-			return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial("default_no_tex"));
+			m_Renderer->AddMaterial(mat, m_Dir);
+			return new Mesh(m_Renderer, vertices, indices, m_Renderer->GetMaterial(m_Dir));
 		}
 		
 	}
