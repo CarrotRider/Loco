@@ -117,11 +117,20 @@ namespace Loco {
 				// 目前各种纹理只加载一张
 
 				// 单纹理 Phong 材质
-				std::shared_ptr<Shader> shader = m_Renderer->GetShader("default.vs", "default.fs");
+				std::shared_ptr<Shader> shader = nullptr; 
 				std::shared_ptr<Texture> diffuse = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
 				std::shared_ptr<Texture> specular = LoadMaterialTextures(material, aiTextureType_SPECULAR);
-				//std::shared_ptr<Texture> normal = LoadMaterialTextures(material, aiTextureType_NORMALS);
-				std::shared_ptr<Texture> normal = nullptr;
+				std::shared_ptr<Texture> normal = LoadMaterialTextures(material, aiTextureType_NORMALS);
+				//std::shared_ptr<Texture> normal = nullptr;
+				if (normalNum!=0)
+				{
+				
+					shader = m_Renderer->GetShader("default.vs", "default.fs");
+				}
+				else
+				{
+					shader = m_Renderer->GetShader("default.vs", "default_no_normal.fs");
+				}
 				float shininess;
 				material->Get(AI_MATKEY_SHININESS, shininess);
 				mat = std::make_shared<Mat_Default_Tex>(shader, diffuse, specular, normal, shininess);
@@ -163,8 +172,9 @@ namespace Loco {
 		//	break;
 		//case aiTextureType_HEIGHT:
 		//	break;
-		//case aiTextureType_NORMALS:
-		//	break;
+		case aiTextureType_NORMALS:
+			typeLoco = Texture::Type::NORMAL;
+			break;
 		//case aiTextureType_SHININESS:
 		//	break;
 		//case aiTextureType_OPACITY:

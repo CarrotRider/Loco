@@ -36,5 +36,6 @@
     <None Include="assets\shaders\test.fs" />
     <None Include="assets\shaders\test.vs" />
     <None Include="assets\shaders\default_no_texture.fs" />
+    <None Include="assets\shaders\default_no_normal.fs" />
   </ItemGroup>
 </Project>

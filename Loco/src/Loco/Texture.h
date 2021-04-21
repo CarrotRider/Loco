@@ -27,6 +27,7 @@ namespace Loco {
 		void Active(int index = 0) const;
 
 		unsigned int GetID() const { return m_ID; }
+		std::string GetPath() const { return m_Path; }
 		int Channels() const { return m_Channels; }
 		int Width() const { return m_Width; }
 		int Height() const { return m_Height; }
