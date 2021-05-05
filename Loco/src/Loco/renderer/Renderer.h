@@ -65,13 +65,13 @@ namespace Loco {
 		void SetWindowHeight(float height) { m_Height = height; }
 		float GetWindowHeight() { return m_Height; }
 
-		std::shared_ptr<Shader> GetShadowShader() const { return m_ShadowShader; }
 	private:
 		void initAxis();
 		void drawAxis() const;
 		void initSkybox();
 		void drawSkybox() const;
-		void initShadow();
+
+		void initDeferredShadint();
 	private:
 		Game* m_Game;
 		float m_Width;
@@ -92,12 +92,12 @@ namespace Loco {
 		std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
 		std::unordered_map<std::string, std::shared_ptr<Material>> m_Materials;
 
+		// 延迟渲染
+		std::shared_ptr<FrameBuffer> m_GBuffer;
+		std::shared_ptr<Texture> m_PosTexture;
+		std::shared_ptr<Texture> m_NormTexture;
+		std::shared_ptr<Texture> m_ColorTexture;
 
-		// 阴影映射
-		std::shared_ptr<FrameBuffer> m_ShadowBuffer;
-		std::shared_ptr<Texture> m_ShadowTexture;
-		std::shared_ptr<Texture> m_ShadowCTexture;
-		std::shared_ptr<Shader> m_ShadowShader;
 		// Final Pass
 		float m_ScreenPanel[30]{
 			// positions		// texCoords

@@ -72,7 +72,7 @@ namespace Loco {
 			}
 			if (material->GetNormalTex() != nullptr)
 			{
-				material->GetNormalTex()->Active(3);
+				material->GetNormalTex()->Active(2);
 			}
 		}
 		else if (m_Material->GetType() == MaterialType::PHONG_SOILD_COLOR)
@@ -86,20 +86,6 @@ namespace Loco {
 		{
 			std::cout << "ERROR::DO NOT SUPPORT MATERIAL" << std::endl;
 		}
-		//GLfloat near_plane = 1.0f, far_plane = 100.f;
-		//glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f,
-		//	near_plane, far_plane);
-		////glm::mat4 lightProjection = glm::perspective(glm::radians(m_Renderer->GetGame()->GetCamera()->Zoom),
-		////	m_Renderer->GetWindowWidth() / m_Renderer->GetWindowHeight(), 0.1f, 100.0f);
-		//glm::mat4 lightView = glm::lookAt(glm::vec3(1.0f, 1.0f, 1.0f), 
-		//	glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-
-		//std::shared_ptr<Shader> shader = m_Renderer->GetShadowShader();
-		//shader->Bind();
-
-		//shader->SetUniform("model", model);
-		//shader->SetUniform("lightSpaceMatrix", lightSpaceMatrix);
 
 		glBindVertexArray(m_VAO->GetID());
 		glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);

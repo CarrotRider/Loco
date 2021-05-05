@@ -124,7 +124,6 @@ namespace Loco {
 				//std::shared_ptr<Texture> normal = nullptr;
 				if (normalNum!=0)
 				{
-				
 					shader = m_Renderer->GetShader("default.vs", "default.fs");
 				}
 				else

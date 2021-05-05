@@ -40,18 +40,22 @@ namespace Loco {
 			return false;
 		}
 
-		//initShadow();
-
 		// Init Frame Buffer
 		m_FrameBuffer = new FrameBuffer();
 
-		m_ScreenTexture = new Texture(m_Width, m_Height, Texture::Type::NONE);
+		m_ScreenTexture = new Texture(m_Width, m_Height);
+		m_ScreenTexture->Image2D(nullptr, DataType::UnsignedByte, 
+			Format::RGB, m_Width, m_Height, InternalFormat::RGB);
+		m_ScreenTexture->SetFilters(Filter::Linear, Filter::Linear);
+
+		m_RenderBuffer = new RenderBuffer(GL_DEPTH24_STENCIL8, m_Width, m_Height);
+
 		m_FrameBuffer->BindTexture(*m_ScreenTexture, GL_COLOR_ATTACHMENT0);
+		m_FrameBuffer->BindRenderBuffer(*m_RenderBuffer);
 		
-		m_ShadowTexture = std::make_shared<Texture>(m_ShadowWidth, m_ShadowHeight, Texture::Type::SHADOW);
-		m_FrameBuffer->BindTexture(*m_ShadowTexture, GL_DEPTH_ATTACHMENT);
-		//m_RenderBuffer = new RenderBuffer(GL_DEPTH24_STENCIL8, m_Width, m_Height);
-		//m_FrameBuffer->BindRenderBuffer(*m_RenderBuffer);
+		//m_ShadowTexture = std::make_shared<Texture>(m_ShadowWidth, m_ShadowHeight);
+		//m_FrameBuffer->BindTexture(*m_ShadowTexture, GL_DEPTH_ATTACHMENT);
+
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
@@ -133,17 +137,11 @@ namespace Loco {
 			shader->UnBind();
 		}
 
-		//glViewport(0, 0, m_ShadowWidth, m_ShadowHeight);
-		//m_ShadowBuffer->Bind();
-		//glClear(GL_DEPTH_BUFFER_BIT);
-		// todo: 配置 shader 矩阵
-		// todo: 渲染场景
 		// 绘制场景
 		for (auto& renderableComp : m_RenderebleComps)
 		{
 			renderableComp->Draw();
 		}
-		//m_ShadowBuffer->UnBind();
 
 		m_FrameBuffer->UnBind();
 		
@@ -151,15 +149,12 @@ namespace Loco {
 		
 		glViewport(0, 0, m_Width, m_Height);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glDisable(GL_DEPTH_TEST);
 
 		m_ShaderFinal->Bind();
 		m_ScreenVA->SetActive(true);
 		m_ScreenTexture->Active(0);
-		//m_ShadowTexture->Active(0);
-		//m_ShadowCTexture->Active(0);
 		m_ShaderFinal->SetUniform("screenTexture", 0);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		m_ScreenTexture->UnBind();
@@ -331,26 +326,10 @@ namespace Loco {
 		m_Shader_Skybox->UnBind();
 	}
 
-	void Renderer::initShadow()
+	void Renderer::initDeferredShadint()
 	{
-		m_ShadowBuffer = std::make_shared<FrameBuffer>();
-		m_ShadowTexture = std::make_shared<Texture>(
-			m_ShadowWidth, m_ShadowHeight, Texture::Type::SHADOW);
-		m_ShadowCTexture = std::make_shared<Texture>(
-			m_ShadowWidth, m_ShadowHeight, Texture::Type::NONE);
-		m_ShadowBuffer->Bind();
-		//m_ShadowBuffer->BindTexture(*m_ShadowCTexture);
-		m_ShadowBuffer->BindTexture(*m_ShadowTexture, GL_DEPTH_ATTACHMENT);
-		glDrawBuffer(GL_NONE);
-		glReadBuffer(GL_NONE);
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-		}
-		m_ShadowBuffer->UnBind();
-		m_ShadowShader = std::make_shared<Shader>(
-			"simple_depth_shader.vs", "simple_depth_shader.fs");
-
+		m_GBuffer = std::make_shared<FrameBuffer>();
+		
 	}
 
 }
