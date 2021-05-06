@@ -189,7 +189,7 @@ namespace Loco {
 		}
 		else
 		{
-			std::cout << "Failed to load texture" << std::endl;
+			std::cout << "Failed to load texture " << texPath << std::endl;
 		}
 		stbi_image_free(data);
 	}
@@ -199,12 +199,15 @@ namespace Loco {
 		glDeleteTextures(1, &m_ID);
 	}
 
+	/// void*, DataType, Format, int, int, InternalFormat
 	void Texture::Image2D(const void* data, int type, int format, 
 		unsigned width, unsigned height, int internalFormat)
 	{
 		Bind();
 		glTexImage2D(GL_TEXTURE_2D, 0, (GLint)internalFormat, 
 			width, height, 0, (GLenum)format, (GLenum)type, data);
+		m_Width = width;
+		m_Height = height;
 		UnBind();
 	}
 

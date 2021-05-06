@@ -119,16 +119,14 @@ namespace Loco {
 		glDeleteVertexArrays(1, &m_ID);
 	}
 
-	void VertexArray::SetActive(bool active)
+	void VertexArray::Bind()
 	{
-		if (active)
-		{
-			glBindVertexArray(m_ID);
-		}
-		else
-		{
-			glBindVertexArray(0);
-		}
+		glBindVertexArray(m_ID);
+	}
+
+	void VertexArray::UnBind()
+	{
+		glBindVertexArray(0);
 	}
 
 	unsigned int VertexArray::GetVertexSize(BufferLayout layout)

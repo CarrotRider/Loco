@@ -128,7 +128,7 @@ namespace Loco {
 				}
 				else
 				{
-					shader = m_Renderer->GetShader("default.vs", "default_no_normal.fs");
+					shader = m_Renderer->GetShader("default.vs", "default_no_normal_gbuffer.fs");
 				}
 				float shininess;
 				material->Get(AI_MATKEY_SHININESS, shininess);

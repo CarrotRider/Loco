@@ -22,7 +22,7 @@ namespace Loco {
 	Renderer::Renderer(Game* game)
 		: m_Game(game)
 	{
-		
+
 	}
 
 	Renderer::~Renderer()
@@ -40,33 +40,10 @@ namespace Loco {
 			return false;
 		}
 
-		// Init Frame Buffer
-		m_FrameBuffer = new FrameBuffer();
-
-		m_ScreenTexture = new Texture(m_Width, m_Height);
-		m_ScreenTexture->Image2D(nullptr, DataType::UnsignedByte, 
-			Format::RGB, m_Width, m_Height, InternalFormat::RGB);
-		m_ScreenTexture->SetFilters(Filter::Linear, Filter::Linear);
-
-		m_RenderBuffer = new RenderBuffer(GL_DEPTH24_STENCIL8, m_Width, m_Height);
-
-		m_FrameBuffer->BindTexture(*m_ScreenTexture, GL_COLOR_ATTACHMENT0);
-		m_FrameBuffer->BindRenderBuffer(*m_RenderBuffer);
-		
-		//m_ShadowTexture = std::make_shared<Texture>(m_ShadowWidth, m_ShadowHeight);
-		//m_FrameBuffer->BindTexture(*m_ShadowTexture, GL_DEPTH_ATTACHMENT);
-
-
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-		}
-		m_FrameBuffer->UnBind();
-
 		// Pass Final
-		m_ScreenVA = new VertexArray(m_ScreenPanel, 6, m_Indices_Screen, 6, 
+		m_ScreenVA = new VertexArray(m_ScreenPanel, 6, m_Indices_Screen, 6,
 			BufferLayout::POS_TEX);
-		m_ShaderFinal = GetShader("final_pass.vs", "final_pass.fs");
+		initDeferredShading();
 		// Init Scene
 		initAxis();
 		initSkybox();
@@ -76,11 +53,8 @@ namespace Loco {
 	}
 
 	void Renderer::ShutDown()
-	{	
+	{
 		delete m_ScreenVA;
-		delete m_FrameBuffer;
-		delete m_ScreenTexture;
-		delete m_RenderBuffer;
 
 		glfwTerminate();
 	}
@@ -88,54 +62,14 @@ namespace Loco {
 	void Renderer::Draw(float deltaTime)
 	{
 		// Pass One
-		m_FrameBuffer->Bind();
-		
+		m_GBuffer->Bind();
+
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		//drawSkybox();
-		drawAxis();
-		
-		// 对场景内所有的 shader 设置光照
-		for (auto& item : m_Materials)
-		{
-			Shader* shader = item.second->GetShader();
-			shader->Bind();
 
-			shader->SetUniform("viewPos", GetGame()->GetCamera()->Position);
-			// Set DirLights
-			int len = m_DirLights.size();
-			std::string s0 = "dirLights[";
-			std::string s1 = "].Direction";
-			std::string s2 = "].Color";
-			for (int i = 0; i < len; i++)
-			{
-				std::string idx = std::to_string(i);
-				shader->SetUniform(s0 + idx + s1, m_DirLights[i]->GetDirection());
-				shader->SetUniform(s0 + idx + s2, m_DirLights[i]->GetColor());
-			}
-			// Set PointLights
-			len = m_PointLights.size();
-			s0 = "pointLights[";
-			s1 = "].Position";
-			s2 = "].Color";
-			std::string s3 = "].Radius";
-			std::string s4 = "].Kc";
-			std::string s5 = "].Kl";
-			std::string s6 = "].Kq";
-			for (int i = 0; i < len; i++)
-			{
-				std::string idx = std::to_string(i);
-				shader->SetUniform(s0 + idx + s1, m_PointLights[i]->GetPosition());
-				shader->SetUniform(s0 + idx + s2, m_PointLights[i]->GetColor());
-				shader->SetUniform(s0 + idx + s3, m_PointLights[i]->GetRadius());
-				shader->SetUniform(s0 + idx + s4, m_PointLights[i]->GetAttenConst());
-				shader->SetUniform(s0 + idx + s5, m_PointLights[i]->GetAttenLinear());
-				shader->SetUniform(s0 + idx + s6, m_PointLights[i]->GetAttenQuad());
-			}
-			shader->UnBind();
-		}
+		//drawSkybox();
+		//drawAxis();
 
 		// 绘制场景
 		for (auto& renderableComp : m_RenderebleComps)
@@ -143,21 +77,29 @@ namespace Loco {
 			renderableComp->Draw();
 		}
 
-		m_FrameBuffer->UnBind();
-		
-		// Pass Final
-		
+		m_GBuffer->UnBind();
+
+		// Lighting Pass
 		glViewport(0, 0, m_Width, m_Height);
 		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glDisable(GL_DEPTH_TEST);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_ShaderFinal->Bind();
-		m_ScreenVA->SetActive(true);
-		m_ScreenTexture->Active(0);
-		m_ShaderFinal->SetUniform("screenTexture", 0);
+		m_ShaderLightingPass->Bind();	
+		m_ShaderLightingPass->SetUniform("gPosition", 0);
+		m_ShaderLightingPass->SetUniform("gNormal", 1);
+		m_ShaderLightingPass->SetUniform("gAlbedoSpec", 2);
+		m_PosTexture->Active(0);
+		m_NormTexture->Active(1);
+		m_ColorTexture->Active(2);
+		setLightingUniforms(m_ShaderLightingPass);
+		m_ScreenVA->Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		m_ScreenTexture->UnBind();
+		m_ScreenVA->UnBind();
+		m_PosTexture->UnBind();
+		m_NormTexture->UnBind();
+		m_ColorTexture->UnBind();
+		m_ShaderLightingPass->UnBind();
+
 	}
 
 	void Renderer::LoadTexture(const std::string& fileName, Texture::Type type)
@@ -175,7 +117,7 @@ namespace Loco {
 	void Renderer::LoadModel(const std::string& fileName)
 	{
 		m_Models.insert(std::pair<std::string, std::unique_ptr<Model>>(fileName,
-			std::move(std::make_unique<Model>(this ,fileName))));
+			std::move(std::make_unique<Model>(this, fileName))));
 	}
 
 	Model* Renderer::GetModel(const std::string& fileName) const
@@ -221,7 +163,7 @@ namespace Loco {
 
 	void Renderer::RemoveRenderableComp(RenderableComponent* renderableComp)
 	{
-		auto iter = std::find(m_RenderebleComps.begin(), m_RenderebleComps.end(), 
+		auto iter = std::find(m_RenderebleComps.begin(), m_RenderebleComps.end(),
 			renderableComp);
 		if (iter != m_RenderebleComps.end())
 		{
@@ -276,7 +218,7 @@ namespace Loco {
 		m_Shader_Axis->SetUniform("view", view);
 		m_Shader_Axis->SetUniform("projection", projection);
 
-		m_VAO_Axis->SetActive(true);
+		m_VAO_Axis->Bind();
 
 		m_Shader_Axis->SetUniform("color", glm::vec3(1.0f, 0.0f, 0.0f));
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
@@ -284,9 +226,9 @@ namespace Loco {
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, (void*)(2 * sizeof(float)));
 		m_Shader_Axis->SetUniform("color", glm::vec3(0.0f, 0.0f, 1.0f));
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, (void*)(4 * sizeof(float)));
-		
-		m_VAO_Axis->SetActive(false);
-		
+
+		m_VAO_Axis->UnBind();
+
 		m_Shader_Axis->UnBind();
 	}
 
@@ -315,21 +257,87 @@ namespace Loco {
 		m_Shader_Skybox->SetUniform("projection", projection);
 
 		glDepthMask(GL_FALSE);
-		m_VAO_Skybox->SetActive(true);
+		m_VAO_Skybox->Bind();
 
 		m_CubeTexture->Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		m_VAO_Skybox->SetActive(false);
+		m_VAO_Skybox->UnBind();
 		glDepthMask(GL_TRUE);
 
 		m_Shader_Skybox->UnBind();
 	}
 
-	void Renderer::initDeferredShadint()
+	void Renderer::initDeferredShading()
 	{
 		m_GBuffer = std::make_shared<FrameBuffer>();
+
+		m_PosTexture = std::make_shared<Texture>();
+		m_PosTexture->Image2D(nullptr, DataType::Float, Format::RGB, m_Width, m_Height, InternalFormat::RGB);
+		m_PosTexture->SetFilters(Filter::Nearest, Filter::Nearest);
+		m_GBuffer->BindTexture(*m_PosTexture, GL_COLOR_ATTACHMENT0);
+
+		m_NormTexture = std::make_shared<Texture>();
+		m_NormTexture->Image2D(nullptr, DataType::Float, Format::RGB, m_Width, m_Height, InternalFormat::RGB);
+		m_NormTexture->SetFilters(Filter::Nearest, Filter::Nearest);
+		m_GBuffer->BindTexture(*m_NormTexture, GL_COLOR_ATTACHMENT1);
+
+		m_ColorTexture = std::make_shared<Texture>();
+		m_ColorTexture->Image2D(nullptr, DataType::UnsignedByte, Format::RGBA, m_Width, m_Height, InternalFormat::RGBA);
+		m_ColorTexture->SetFilters(Filter::Nearest, Filter::Nearest);
+		m_GBuffer->BindTexture(*m_ColorTexture, GL_COLOR_ATTACHMENT2);
 		
+		unsigned attachments[3]{ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+		glDrawBuffers(3, attachments);
+
+		m_DepthBuffer = std::make_shared<RenderBuffer>(GL_DEPTH24_STENCIL8, m_Width, m_Height);
+		m_GBuffer->BindRenderBuffer(*m_DepthBuffer);
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
+			std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+		}
+
+		m_GBuffer->UnBind();
+
+		m_ShaderLightingPass = GetShader("final_pass.vs", "deferred_shading.fs");
 	}
 
+	// 设置光照 Uniforms: 灯光信息，像机信息
+	void Renderer::setLightingUniforms(std::shared_ptr<Shader> shader)
+	{
+		shader->Bind();
+		// Camera Info
+		shader->SetUniform("viewPos", GetGame()->GetCamera()->Position);
+		// DirLights Info
+		int len = m_DirLights.size();
+		std::string s0 = "dirLights[";
+		std::string s1 = "].Direction";
+		std::string s2 = "].Color";
+		for (int i = 0; i < len; i++)
+		{
+			std::string idx = std::to_string(i);
+			shader->SetUniform(s0 + idx + s1, m_DirLights[i]->GetDirection());
+			shader->SetUniform(s0 + idx + s2, m_DirLights[i]->GetColor());
+		}
+		// PointLights Info
+		len = m_PointLights.size();
+		s0 = "pointLights[";
+		s1 = "].Position";
+		s2 = "].Color";
+		std::string s3 = "].Radius";
+		std::string s4 = "].Kc";
+		std::string s5 = "].Kl";
+		std::string s6 = "].Kq";
+		for (int i = 0; i < len; i++)
+		{
+			std::string idx = std::to_string(i);
+			shader->SetUniform(s0 + idx + s1, m_PointLights[i]->GetPosition());
+			shader->SetUniform(s0 + idx + s2, m_PointLights[i]->GetColor());
+			shader->SetUniform(s0 + idx + s3, m_PointLights[i]->GetRadius());
+			shader->SetUniform(s0 + idx + s4, m_PointLights[i]->GetAttenConst());
+			shader->SetUniform(s0 + idx + s5, m_PointLights[i]->GetAttenLinear());
+			shader->SetUniform(s0 + idx + s6, m_PointLights[i]->GetAttenQuad());
+		}
+	}
 }

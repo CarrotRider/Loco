@@ -71,7 +71,8 @@ namespace Loco {
 		void initSkybox();
 		void drawSkybox() const;
 
-		void initDeferredShadint();
+		void initDeferredShading();
+		void setLightingUniforms(std::shared_ptr<Shader>);
 	private:
 		Game* m_Game;
 		float m_Width;
@@ -92,13 +93,13 @@ namespace Loco {
 		std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
 		std::unordered_map<std::string, std::shared_ptr<Material>> m_Materials;
 
-		// 延迟渲染
+		// Lighting Pass
 		std::shared_ptr<FrameBuffer> m_GBuffer;
 		std::shared_ptr<Texture> m_PosTexture;
 		std::shared_ptr<Texture> m_NormTexture;
 		std::shared_ptr<Texture> m_ColorTexture;
-
-		// Final Pass
+		std::shared_ptr<RenderBuffer> m_DepthBuffer;
+		std::shared_ptr<Shader> m_ShaderLightingPass;
 		float m_ScreenPanel[30]{
 			// positions		// texCoords
 			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
@@ -111,10 +112,6 @@ namespace Loco {
 		};
 		unsigned m_Indices_Screen[6]{ 0,1,2,3,4,5 };
 		VertexArray* m_ScreenVA;
-		FrameBuffer* m_FrameBuffer;
-		Texture* m_ScreenTexture;
-		RenderBuffer* m_RenderBuffer;
-		std::shared_ptr<Shader> m_ShaderFinal;
 		// 坐标轴
 		const glm::vec3 m_Vecs_Axis[6] {
 			glm::vec3(-500.0f, 0.0f, 0.0f), glm::vec3(500.0f, 0.0f, 0.0f),

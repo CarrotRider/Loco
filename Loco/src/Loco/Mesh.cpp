@@ -51,8 +51,6 @@ namespace Loco {
 		shader->SetUniform("view", view);
 		shader->SetUniform("projection", projection);
 
-		// 灯光信息已经在 Renderer 中统一进行设置
-
 		// 设置材质信息
 		if (m_Material->GetType() == MaterialType::PHONE_TEXTURE)
 		{

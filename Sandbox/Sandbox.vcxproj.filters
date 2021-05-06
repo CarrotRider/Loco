@@ -37,5 +37,7 @@
     <None Include="assets\shaders\test.vs" />
     <None Include="assets\shaders\default_no_texture.fs" />
     <None Include="assets\shaders\default_no_normal.fs" />
+    <None Include="assets\shaders\default_no_normal_gbuffer.fs" />
+    <None Include="assets\shaders\deferred_shading.fs" />
   </ItemGroup>
 </Project>

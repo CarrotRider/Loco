@@ -21,7 +21,8 @@ namespace Loco
 			BufferLayout layout);
 		~VertexArray();
 
-		void SetActive(bool active);
+		void Bind();
+		void UnBind();
 
 		unsigned int GetVertexNum() const { return m_NumVerts; }
 		unsigned int GetIndexNum() const { return m_NumIndices; }
