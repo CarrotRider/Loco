@@ -343,5 +343,5 @@ healthchecksdb
 bin/
 bin-int/
 build/
-assets/
-!assets/shaders/
+Sandbox/assets/models/
+Sandbox/assets/textures/
