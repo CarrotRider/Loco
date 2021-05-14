@@ -104,8 +104,9 @@ namespace Loco {
 
 	void Renderer::LoadTexture(const std::string& fileName, Texture::Type type)
 	{
-		m_Textures.insert(std::pair<std::string, std::unique_ptr<Texture>>(fileName,
-			std::move(std::make_unique<Texture>(fileName, type))));
+		std::unique_ptr<Texture> texture = std::make_unique<Texture>();
+		texture->Load(fileName, type);
+		m_Textures.insert(std::pair<std::string, std::unique_ptr<Texture>>(fileName, std::move(texture)));
 	}
 
 	Texture* Renderer::GetTexture(const std::string& fileName) const

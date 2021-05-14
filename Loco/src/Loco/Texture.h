@@ -141,11 +141,11 @@ namespace Loco {
 			NONE ,DIFFUSE, SPECULAR, NORMAL
 		};
 
-		Texture();
-		Texture(int width, int height);
-		Texture(const std::string& texPath, Type type);
-		Texture(const char* texPath, Type type);
+		Texture(int width = 0, int height = 0);
 		virtual ~Texture();
+
+		bool Load(const std::string& path, Type type);
+		bool Load(const char* path, Type type);
 
 		void Image2D(const void* data, int type, int format,
 			unsigned width, unsigned height, int internalFormat);

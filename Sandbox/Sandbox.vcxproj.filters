@@ -26,18 +26,12 @@
     <None Include="assets\shaders\default.vs" />
     <None Include="assets\shaders\final_pass.fs" />
     <None Include="assets\shaders\final_pass.vs" />
-    <None Include="assets\shaders\light.fs" />
-    <None Include="assets\shaders\light.vs" />
-    <None Include="assets\shaders\model_test.fs" />
-    <None Include="assets\shaders\model_test.vs" />
-    <None Include="assets\shaders\show_depth.fs" />
     <None Include="assets\shaders\sky_box.fs" />
     <None Include="assets\shaders\sky_box.vs" />
-    <None Include="assets\shaders\test.fs" />
-    <None Include="assets\shaders\test.vs" />
     <None Include="assets\shaders\default_no_texture.fs" />
     <None Include="assets\shaders\default_no_normal.fs" />
     <None Include="assets\shaders\default_no_normal_gbuffer.fs" />
     <None Include="assets\shaders\deferred_shading.fs" />
+    <None Include="assets\shaders\default_brdf.fs" />
   </ItemGroup>
 </Project>

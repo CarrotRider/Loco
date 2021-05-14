@@ -344,3 +344,4 @@ bin/
 bin-int/
 build/
 assets/
+!assets/shaders/

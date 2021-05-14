@@ -126,19 +126,6 @@ namespace Loco {
 	const int Wrapping::MirroredRepeat = GL_MIRRORED_REPEAT;
 
 
-	Texture::Texture()
-		: m_ID(0)
-		, m_Path()
-		, m_type(Type::NONE)
-		, m_Channels(0)
-		, m_Width(0)
-		, m_Height(0)
-	{
-		glGenTextures(1, &m_ID);
-		glBindTexture(GL_TEXTURE_2D, m_ID);
-	}
-
-	// 用于 FrameBuffer
 	Texture::Texture(int width, int height)
 		: m_ID(0)
 		, m_Path()
@@ -151,27 +138,29 @@ namespace Loco {
 		glBindTexture(GL_TEXTURE_2D, m_ID);
 	}
 
-	Texture::Texture(const std::string& texPath, Type type)
-		: Texture(texPath.c_str(), type) {}
 
-	Texture::Texture(const char* texPath, Type type)
-		: m_ID(0)
-		, m_Path(texPath)
-		, m_type(type)
-		, m_Channels(0)
-		, m_Width(0)
-		, m_Height(0)
+	Texture::~Texture()
 	{
-		glGenTextures(1, &m_ID);
+		glDeleteTextures(1, &m_ID);
+	}
+
+	bool Texture::Load(const std::string& path, Type type)
+	{
+		return Load(path.c_str(), type);
+	}
+
+	bool Texture::Load(const char* path, Type type)
+	{
 		glBindTexture(GL_TEXTURE_2D, m_ID);
-		
+
 		SetWrapping(Wrapping::Repeat, Wrapping::Repeat);
 		SetFilters(Filter::Linear, Filter::Linear);
 
 		stbi_set_flip_vertically_on_load(true);
 
-		unsigned char* data = stbi_load(texPath,
+		unsigned char* data = stbi_load(path,
 			&m_Width, &m_Height, &m_Channels, 0);
+
 		if (data)
 		{
 			switch (m_Channels)
@@ -189,14 +178,12 @@ namespace Loco {
 		}
 		else
 		{
-			std::cout << "Failed to load texture " << texPath << std::endl;
+			std::cout << "Failed to load texture: " << path << std::endl;
+			stbi_image_free(data);
+			return false;
 		}
 		stbi_image_free(data);
-	}
-
-	Texture::~Texture()
-	{
-		glDeleteTextures(1, &m_ID);
+		return true;
 	}
 
 	/// void*, DataType, Format, int, int, InternalFormat

@@ -15,14 +15,14 @@ protected:
 	bool InitializeGamePlay() override
 	{
 		go = new GameObject(this);
-		go->AddComponent(new ModelComponent(go, new Model(m_Renderer, "assets/models/wood_cube.obj")));
+		go->AddComponent(new ModelComponent(go, new Model(m_Renderer, "assets/models/untitled.fbx")));
 		go->GetTransform()->SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 		ground = new GameObject(this);
 		ground->AddComponent(new ModelComponent(ground, new Model(m_Renderer, "assets/models/wood_ground.obj")));
 		wall = new GameObject(this);
 		wall->AddComponent(new ModelComponent(wall, new Model(m_Renderer, "assets/models/wall.obj")));
 		wall->GetTransform()->SetPosition(glm::vec3(10.0f, 5.0f, -10.0f));
-		//wall->GetTransform()->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+		wall->GetTransform()->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 
 		//go->GetTransform()->SetPosition(glm::vec3(10.0f, 10.0f, 10.0f));
 		//go->GetTransform()->SetRotation(glm::vec3(30.0f, 0.0f, 0.0f));

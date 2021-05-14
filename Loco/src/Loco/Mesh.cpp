@@ -55,6 +55,15 @@ namespace Loco {
 		if (m_Material->GetType() == MaterialType::PHONE_TEXTURE)
 		{
 			Mat_Default_Tex* material = dynamic_cast<Mat_Default_Tex*>(m_Material.get());
+			
+			shader->SetUniform("material.bDiffuseTex", material->GetDiffuseTexActive());
+			shader->SetUniform("material.bSpecularTex", material->GetSpecularTexActive());
+			shader->SetUniform("material.bNormalTex", material->GetNormalTexActive());
+
+			shader->SetUniform("material.DiffuseColor", material->GetDiffuseColor());
+			shader->SetUniform("material.SpecularColor", material->GetSpecularColor());
+			shader->SetUniform("material.Normal", material->GetNormal());
+
 			shader->SetUniform("material.DiffuseTexutre_0", 0);
 			shader->SetUniform("material.SpecularTexture_0", 1);
 			shader->SetUniform("material.NormalTexture_0", 2);
@@ -73,13 +82,13 @@ namespace Loco {
 				material->GetNormalTex()->Active(2);
 			}
 		}
-		else if (m_Material->GetType() == MaterialType::PHONG_SOILD_COLOR)
-		{
-			Mat_Default_No_Tex* material = dynamic_cast<Mat_Default_No_Tex*>(m_Material.get());
-			shader->SetUniform("material.Diffuse", material->GetDiffuseColor());
-			shader->SetUniform("material.Specular", material->GetSpecularColor());
-			shader->SetUniform("material.Shininess", material->GetShininess());
-		}
+		//else if (m_Material->GetType() == MaterialType::PHONG_SOILD_COLOR)
+		//{
+		//	Mat_Default_No_Tex* material = dynamic_cast<Mat_Default_No_Tex*>(m_Material.get());
+		//	shader->SetUniform("material.Diffuse", material->GetDiffuseColor());
+		//	shader->SetUniform("material.Specular", material->GetSpecularColor());
+		//	shader->SetUniform("material.Shininess", material->GetShininess());
+		//}
 		else
 		{
 			std::cout << "ERROR::DO NOT SUPPORT MATERIAL" << std::endl;
