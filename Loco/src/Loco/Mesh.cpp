@@ -8,7 +8,6 @@
 #include "Texture.h"
 #include "Loco/Material.h"
 #include "Loco/Mat_Default_Tex.h"
-#include "Loco/Mat_Default_No_Tex.h"
 #include "Loco/Components/DirLightComponent.h"
 #include "Loco/Components/PointLightComponent.h"
 

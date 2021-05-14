@@ -5,7 +5,6 @@
 #include "Loco/Renderer/Shader.h"
 #include "Texture.h"
 #include "Loco/Mat_Default_Tex.h"
-#include "Loco/Mat_Default_No_Tex.h"
 
 #include "Path.h"
 

@@ -96,7 +96,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Loco\Mat_Default_No_Tex.cpp" />
     <ClCompile Include="src\Loco\Material.cpp" />
     <ClCompile Include="src\Loco\Mat_Default_Tex.cpp" />
     <ClCompile Include="src\Loco\Components\LightComponent.cpp" />
@@ -136,7 +135,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Loco\Mat_Default_No_Tex.h" />
     <ClInclude Include="src\Loco\Material.h" />
     <ClInclude Include="src\Loco\Mat_Default_Tex.h" />
     <ClInclude Include="src\Loco\Components\LightComponent.h" />
